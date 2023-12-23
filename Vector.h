@@ -153,3 +153,21 @@ void Collections::Vector<T>::push_back(const T& value){
     vec[size] = value;
     size++;
 }
+
+template <typename T>
+void Collections::Vector<T>::push_front(const T& value){
+    if (vec == nullptr){
+        init_vector();
+    }
+    if (size >= capacity){
+        reserveSpace(capacity); //dodac error handling
+        capacity *= 2;
+    }
+    T* destination = (T*)((char*)vec);
+    T* source = (T*)vec;
+    for (size_t i = size; i > 0; i--){
+        destination[i] = source[i-1];
+    }
+    destination[0] = value;
+    size++;
+}

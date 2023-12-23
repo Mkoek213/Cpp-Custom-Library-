@@ -10,9 +10,11 @@ int main(){
     Collections::Vector<int> vec4 = {1, 2, 3, 4};
     Collections::Vector<double> vec5 = {11.55, 22.3, 6.3123};
     Collections::Vector<std::string> vec6 = {"abba", "essa", "adasda"};
-    vec3.push_back("aaa");
-    for (int i = 0 ; i < vec3.getSize(); i++){
-        std::cout << vec3[i]<<std::endl;
+    vec6.push_front("aaa");
+    std::cout<<vec6.getSize();
+    for (int i = 0 ; i < vec6.getSize(); i++){
+        std::cout << vec6[i]<<" ";
     }
+    std::cout<<"AA";
     return 0;
 }
