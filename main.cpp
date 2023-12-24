@@ -11,7 +11,9 @@ int main(){
     Collections::Vector<double> vec5 = {11.55, 22.3, 6.3123};
     Collections::Vector<std::string> vec6 = {"abba", "essa", "adasda"};
     vec6.push_front("aaa");
-    std::cout<<vec6.getSize();
+    vec6.popAtIndex(0);
+    vec6.clear();
+        vec6.push_front("aaa");
     for (int i = 0 ; i < vec6.getSize(); i++){
         std::cout << vec6[i]<<" ";
     }

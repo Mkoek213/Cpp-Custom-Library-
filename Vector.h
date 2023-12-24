@@ -3,6 +3,9 @@
 #include <initializer_list>
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstring>
+#include <algorithm>
+
 
 namespace Collections{
     template <typename T>
@@ -25,8 +28,8 @@ namespace Collections{
             //Access to non-const vectors:
             T& operator[](size_t index); //access element using [index]
             T& at(size_t index); //access element by index
-            T& front(); //get first element
-            T& back(); //get last element
+            T& get_front(); //get first element
+            T& get_back(); //get last element
             //Capacity getters:
             size_t getSize()const; //returns size
             size_t getCapacity()const; //returns capacity
@@ -78,14 +81,14 @@ T& Collections::Vector<T>::operator[](size_t index){
 
 template <typename T>
 T& Collections::Vector<T>::at(size_t index){
-    if (index > size){
+    if (index >= size){
         throw std::out_of_range("Index out of range");
     }
     return vec[index];
 }
 
 template <typename T>
-T& Collections::Vector<T>::front(){
+T& Collections::Vector<T>::get_front(){
     if (size == 0){
         throw std::out_of_range("Vector is empty");
     }
@@ -93,7 +96,7 @@ T& Collections::Vector<T>::front(){
 }
 
 template <typename T>
-T& Collections::Vector<T>::back(){
+T& Collections::Vector<T>::get_back(){
     if (size == 0){
         throw std::out_of_range("Vector is empty");
     }
@@ -160,7 +163,7 @@ void Collections::Vector<T>::push_front(const T& value){
         init_vector();
     }
     if (size >= capacity){
-        reserveSpace(capacity); //dodac error handling
+        reserveSpace(capacity);
         capacity *= 2;
     }
     T* destination = (T*)((char*)vec);
@@ -170,4 +173,88 @@ void Collections::Vector<T>::push_front(const T& value){
     }
     destination[0] = value;
     size++;
+}
+
+template <typename T>
+void Collections::Vector<T>::pop_back(){
+    if (vec == nullptr){
+        throw std::runtime_error("Vector points to NULL");
+    }
+    if (size == 0){
+        throw std::runtime_error("Can not pop from empty vector");
+    }
+    if constexpr (!std::is_trivially_destructible_v<T>) {
+        // Non-trivial type, call the destructor for the last element
+        vec[size - 1].~T();
+    }
+    size--;
+}
+
+template <typename T>
+void Collections::Vector<T>::pop_front(){
+    if (vec == nullptr){
+        throw std::runtime_error("Vector points to NULL");
+    }
+    if (size == 0){
+        throw std::runtime_error("Can not pop from empty vector");
+    }
+    if constexpr (!std::is_trivially_destructible_v<T>) {
+        // Non-trivial type, call the destructor for the last element
+        vec[0].~T();
+    }
+    for (size_t i = 1; i < size; i++){
+        vec[i - 1] = std::move(vec[i]);
+    }
+    size--;
+}
+
+template <typename T>
+void Collections::Vector<T>::pushAtIndex(const T& value, size_t index){
+    if (index > size){
+        throw std::out_of_range("Index out of range");
+    }
+    if (vec == nullptr){
+        init_vector();
+    }
+    if (size >= capacity){
+        reserveSpace(capacity);
+        capacity *= 2;
+    }
+    for (size_t i = size; i > index; i--){
+        vec[i] = std::move(vec[i - 1]);
+    }
+    vec[index] = value;
+    size++;
+}
+
+template <typename T>
+void Collections::Vector<T>::popAtIndex(size_t index){
+    if (index >= size){
+        throw std::out_of_range("Index out of range");
+    }
+    if (vec == nullptr){
+        throw std::runtime_error("Vector points to NULL");
+    }
+    if (size == 0){
+        throw std::runtime_error("Can not pop from empty vector");
+    }
+    if constexpr (!std::is_trivially_destructible_v<T>) {
+        // Non-trivial type, call the destructor for element at index
+        vec[index].~T();
+    }
+    for (size_t i = index + 1; i < size; i++){
+        vec[i - 1] = std::move(vec[i]);
+    }
+    size --;
+}
+
+template <typename T>
+void Collections::Vector<T>::clear(){
+    if (vec == nullptr){
+        throw std::runtime_error("Vector points to NULL");
+    }
+    if (size == 0){
+        throw std::runtime_error("Can not pop from empty vector");
+    }
+    size = 0;
 }
