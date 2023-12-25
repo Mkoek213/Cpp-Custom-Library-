@@ -258,3 +258,25 @@ void Collections::Vector<T>::clear(){
     }
     size = 0;
 }
+
+template <typename T>
+T* Collections::Vector<T>::begin(){
+    if (vec == nullptr){
+        throw std::runtime_error("Vector points to NULL");
+    }
+    if (size == 0){
+        throw std::runtime_error("Vector is empty");
+    }
+    return vec;
+}
+
+template <typename T>
+T* Collections::Vector<T>::end(){
+    if (vec == nullptr){
+        throw std::runtime_error("Vector points to NULL");
+    }
+    if (size == 0){
+        throw std::runtime_error("Vector is empty");
+    }
+    return (T*)(vec + size - 1);
+}
