@@ -31,18 +31,18 @@ namespace Collections{
             T& get_front(); //get first element
             T& get_back(); //get last element
             //Capacity getters:
-            size_t getSize()const; //returns size
-            size_t getCapacity()const; //returns capacity
+            size_t get_size()const; //returns size
+            size_t get_capacity()const; //returns capacity
             bool empty()const; //returns true if empty
             //Modifiers:
-            void shrinkToFit(); //shrinks capacity to size
-            void reserveSpace(size_t extra_space); //reserve extra memory
+            void shrink_to_fit(); //shrinks capacity to size
+            void reserve_space(size_t extra_space); //reserve extra memory
             void push_back(const T& value); //push value at the end
             void push_front(const T& value); //push value in front
             void pop_back(); //pop last value
             void pop_front(); //pop first value
-            void pushAtIndex(const T& value, size_t index); //push value at index
-            void popAtIndex(size_t index); //pop value from index
+            void push_at_index(const T& value, size_t index); //push value at index
+            void pop_at_index(size_t index); //pop value from index
             void clear(); //clear all values
             //Iterators:
             T* begin(); //returns pointer to the first element
@@ -104,12 +104,12 @@ T& Collections::Vector<T>::get_back(){
 }
 
 template <typename T>
-size_t Collections::Vector<T>::getSize()const{
+size_t Collections::Vector<T>::get_size()const{
     return size;
 }
 
 template <typename T>
-size_t Collections::Vector<T>::getCapacity()const{
+size_t Collections::Vector<T>::get_capacity()const{
     return capacity;
 }
 
@@ -119,7 +119,7 @@ bool Collections::Vector<T>::empty()const{
 }
 
 template <typename T>
-void Collections::Vector<T>::shrinkToFit(){
+void Collections::Vector<T>::shrink_to_fit(){
     if (vec == nullptr){
         throw std::bad_alloc();
     }
@@ -132,7 +132,7 @@ void Collections::Vector<T>::shrinkToFit(){
 }
 
 template <typename T>
-void Collections::Vector<T>::reserveSpace(size_t extra_capacity){
+void Collections::Vector<T>::reserve_space(size_t extra_capacity){
     if (vec == nullptr){
         throw std::bad_alloc();
     }
@@ -209,7 +209,7 @@ void Collections::Vector<T>::pop_front(){
 }
 
 template <typename T>
-void Collections::Vector<T>::pushAtIndex(const T& value, size_t index){
+void Collections::Vector<T>::push_at_index(const T& value, size_t index){
     if (index > size){
         throw std::out_of_range("Index out of range");
     }
@@ -228,7 +228,7 @@ void Collections::Vector<T>::pushAtIndex(const T& value, size_t index){
 }
 
 template <typename T>
-void Collections::Vector<T>::popAtIndex(size_t index){
+void Collections::Vector<T>::pop_at_index(size_t index){
     if (index >= size){
         throw std::out_of_range("Index out of range");
     }
