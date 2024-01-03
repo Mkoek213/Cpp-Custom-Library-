@@ -150,7 +150,7 @@ void Collections::Vector<T>::push_back(const T& value){
         init_vector();
     }
     if (size >= capacity){
-        reserveSpace(capacity);
+        reserve_space(capacity);
         capacity *= 2;
     }
     vec[size] = value;
@@ -163,7 +163,7 @@ void Collections::Vector<T>::push_front(const T& value){
         init_vector();
     }
     if (size >= capacity){
-        reserveSpace(capacity);
+        reserve_space(capacity);
         capacity *= 2;
     }
     T* destination = (T*)((char*)vec);
@@ -217,7 +217,7 @@ void Collections::Vector<T>::push_at_index(const T& value, size_t index){
         init_vector();
     }
     if (size >= capacity){
-        reserveSpace(capacity);
+        reserve_space(capacity);
         capacity *= 2;
     }
     for (size_t i = size; i > index; i--){
