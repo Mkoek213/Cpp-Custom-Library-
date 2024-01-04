@@ -19,7 +19,7 @@ namespace Collections{
                 }
             }
             ~Set(){ //default destructor
-                //space to implemet destructor using clear function
+                clear(root);
             }
             //Access to non-const sets:
             T* find(const T& value); //returns the iterator to the element specified if found, else return nullptr
@@ -31,7 +31,7 @@ namespace Collections{
             void insert(const T& value); //insert the specified element in the set
             void erase(const T& element_to_delete); //deletion of an element with a set value, if not found return nullptr
             void clear(); //deletes/clears all the elements from the set.
-            void swap(const T* set_to_swap); //swaps the elements of the two sets
+            void swap(Collections::Set<T>& set_to_swap); //swaps the elements of the two sets
             void display();
             //Iterators:
             T* begin(); //returns pointer to the first element
@@ -141,6 +141,44 @@ namespace Collections{
                     return root2;
                 }
             }
+
+            void clear(TreeNode* node){
+                if (root != nullptr){
+                    if (node->left != nullptr){
+                        clear(node->left);
+                    }
+                    if (node->right != nullptr){
+                        clear(node->right);
+                    }
+                    delete node;
+                }
+                root = nullptr;
+                size = 0;
+            }
+
+            TreeNode* begin(TreeNode* node){
+                if (node != nullptr){
+                    if (node->left == nullptr){
+                        return node;
+                    }else{
+                        return begin(node->left);
+                    }
+                }else{
+                    return node;
+                }
+            }
+
+            TreeNode* end(TreeNode* node){
+                if (node != nullptr){
+                    if (node->right == nullptr){
+                        return node;
+                    }else{
+                        return end(node->right);
+                    }
+                }else{
+                    return node;
+                }
+            }
     };
 }
 
@@ -177,10 +215,36 @@ void Collections::Set<T>::erase(const T& value){
 }
 
 template <typename T>
+void Collections::Set<T>::clear(){
+    clear(root);
+}
+
+template <typename T>
+void Collections::Set<T>::swap(Collections::Set<T>& set_to_swap){
+    TreeNode* temp_root = this->root;
+    this->root = set_to_swap.root;
+    set_to_swap.root = temp_root;
+    size_t temp_size = this->size;
+    this->size = set_to_swap.size;
+    set_to_swap.size = temp_size;
+}
+
+template <typename T>
 void Collections::Set<T>::display()
 {
-    if (root == nullptr){
-        throw std::runtime_error("Can not display empty set");
-    }
     display(root);
+}
+
+template <typename T>
+T* Collections::Set<T>::begin()
+{
+    TreeNode* node = begin(root);
+    return &node->data;
+}
+
+template <typename T>
+T* Collections::Set<T>::end()
+{
+    TreeNode* node = end(root);
+    return &node->data;
 }
