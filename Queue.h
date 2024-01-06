@@ -31,7 +31,7 @@ namespace Collections{
             void enqueue(const T& value); //insert the specified element in the queue, at the end
             void dequeue(); //function to dequeue the front element, delete at the beginning
             void clear(); //deletes/clears all the elements from the set.
-            void swap(Collections::Queue<T>& que_to_swap); //exchange the contents of two queues but the queues must be of the same data type, although sizes may differ.
+            void swap(Collections::Queue<T>& que_to_swap); //exchange the contents of two queues but the queues must be of the same value type, although sizes may differ.
             static void swap(Collections::Queue<T>& que1_to_swap, Collections::Queue<T>& que2_to_swap); //same as above
             void display()const; //display the queue
             static void display(Collections::Queue<T>& que_to_display);
@@ -40,9 +40,9 @@ namespace Collections{
             T* end(); //returns pointer to the last element
         private:
             struct Node{
-                T data;
+                T value;
                 Node* next;
-                Node(const T& value) : data(value), next(nullptr) {}
+                Node(const T& value) : value(value), next(nullptr) {}
             };
             size_t size;
             Node* front;
@@ -65,7 +65,7 @@ T& Collections::Queue<T>::get_front(){
     if (front == nullptr){ //queue was empty
         throw std::runtime_error("Queue is empty, can not get first element");
     }
-    return front->data;
+    return front->value;
 }
 
 template <typename T>
@@ -73,7 +73,7 @@ T& Collections::Queue<T>::get_back(){
     if (rear == nullptr){ //queue was empty
         throw std::runtime_error("Queue is empty, can not get last element");
     }
-    return rear->data;
+    return rear->value;
 }
 
 template <typename T>
@@ -156,7 +156,7 @@ template <typename T>
 void Collections::Queue<T>::display()const{
     Node* current = this->front;
     while (current != nullptr){
-        std::cout << current->data << " ";
+        std::cout << current->value << " ";
         current = current->next;
     }
 }
@@ -165,7 +165,7 @@ template <typename T>
 void Collections::Queue<T>::display(Collections::Queue<T>& que_to_display){
     Node* current = que_to_display.front;
     while (current != nullptr){
-        std::cout << current->data << " ";
+        std::cout << current->value << " ";
         current = current->next;
     }
 }
@@ -175,7 +175,7 @@ T* Collections::Queue<T>::begin(){
     if (this->front == nullptr){
         return nullptr;
     }
-    return &front->data;
+    return &front->value;
 }
 
 template <typename T>
@@ -183,5 +183,5 @@ T* Collections::Queue<T>::end(){
     if (this->rear == nullptr){
         return nullptr;
     }
-    return &rear->data;
+    return &rear->value;
 }

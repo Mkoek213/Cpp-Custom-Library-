@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VECTOR_H
+#define VECTOR_H  
 #include <cstddef> 
 #include <initializer_list>
 #include <stdio.h>
@@ -280,3 +281,5 @@ T* Collections::Vector<T>::end(){
     }
     return (T*)(vec + size - 1);
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SET_H
+#define SET_H  
 #include <cstddef> 
 #include <initializer_list>
 #include <stdio.h>
@@ -38,10 +39,10 @@ namespace Collections{
             T* end(); //returns pointer to the last element
         private:
             struct TreeNode{
-                T data;
+                T value;
                 TreeNode* left;
                 TreeNode* right;
-                TreeNode(const T& value) : data(value), left(nullptr), right(nullptr) {}
+                TreeNode(const T& value) : value(value), left(nullptr), right(nullptr) {}
             };
             size_t size;
             TreeNode* root;
@@ -51,9 +52,9 @@ namespace Collections{
                     size++;
                     return new TreeNode(value);
                 }
-                if (value < node->data){
+                if (value < node->value){
                     node->left = insert(node->left, value);
-                }else if (value > node->data){
+                }else if (value > node->value){
                     node->right = insert(node->right, value);
                 }
                 //if value already exists, skip
@@ -61,11 +62,11 @@ namespace Collections{
             }
 
             TreeNode* find(TreeNode* node, const T& value)const{
-                if (node == nullptr || node->data == value){
+                if (node == nullptr || node->value == value){
                     return node;
-                }else if( value < node->data){
+                }else if( value < node->value){
                     return find(node->left, value);
-                }else{ //value > node->data
+                }else{ //value > node->value
                     return find(node->right, value);
                 }
             }
@@ -74,7 +75,7 @@ namespace Collections{
                 if (node != nullptr)
                 {
                     display(node->left);
-                    std::cout<<node->data<<" ";
+                    std::cout<<node->value<<" ";
                     display(node->right);
                 }
             }
@@ -86,10 +87,10 @@ namespace Collections{
 
                 // Recursive calls for ancestors of
                 // node to be deleted
-                if (value < root2->data){
+                if (value < root2->value){
                     root2->left = erase(root2->left, value);
                     return root2;
-                }else if (value > root2->data){
+                }else if (value > root2->value){
                     root2->right = erase(root2->right, value);
                     return root2;
                 }
@@ -133,8 +134,8 @@ namespace Collections{
                         successorParent->right = successor->right;
                     }
 
-                    // Copy Successor Data to root
-                    root2->data = successor->data;
+                    // Copy Successor value to root
+                    root2->value = successor->value;
 
                     delete successor;
                     size--;
@@ -185,7 +186,7 @@ namespace Collections{
 template <typename T>
 T* Collections::Set<T>::find(const T& value){
     TreeNode* node = find(root, value);
-    return &node->data;
+    return &node->value;
 }
 
 template <typename T>
@@ -239,12 +240,14 @@ template <typename T>
 T* Collections::Set<T>::begin()
 {
     TreeNode* node = begin(root);
-    return &node->data;
+    return &node->value;
 }
 
 template <typename T>
 T* Collections::Set<T>::end()
 {
     TreeNode* node = end(root);
-    return &node->data;
+    return &node->value;
 }
+
+#endif
