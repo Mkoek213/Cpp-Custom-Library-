@@ -403,6 +403,10 @@ class RedBlackTree{
                 deleteNodeHelper(this->root, key);
             }
 
+            void clear(){
+                this->root = nullptr;
+            }
+
             void printTree(){
                 if (root){
                     printHelper(this->root, "", true);
