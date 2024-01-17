@@ -10,17 +10,8 @@
 
 
 int main() {
-    Collections::Map<int, double> myMap;
-    myMap.insert(1, 2.2);
-    myMap.insert(77, 6.2);
-    myMap.insert(11, 3.2);    
-    myMap.insert(122, 2.2);
-    myMap.insert(773, 6.2);
-    myMap.insert(1114, 3.2);    
-    myMap.insert(12113, 2.2);
-    myMap.insert(7117, 6.2);
-    myMap.insert(112, 3.2);    
-    double* val = myMap.find(122);
+    Collections::Map<int, std::string> myMap = {{1, "One"}, {2, "Two"}, {3, "Three"}};
+    auto it = myMap.end();
 
     // Testing with integers
     Collections::Queue<int> intQueue = {1, 2, 3, 4, 5};
@@ -58,6 +49,7 @@ int main() {
     intQueue2.display();
 
     return 0;
+
 }
 
 
