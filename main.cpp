@@ -10,8 +10,14 @@
 
 
 int main() {
-    Collections::Map<int, std::string> myMap = {{1, "One"}, {2, "Two"}, {3, "Three"}};
+    Collections::Map<int, std::string> myMap = {{1, "One"}, {2, "One"},{1, "One"},{2, "two"}, {2, "Two"}, {3, "Three"}};
+    Collections::Map<int, std::string> myMap2 = {{65, "Oasdadne"}, {111, "asdad"},{1, "asdadsa"},{1, "ad"}, {22, "sadad"}, {5, "aaa"}};
     auto it = myMap.end();
+    myMap = myMap2;
+    auto it2 = myMap.find(1);
+    std::cout<<it2->value;
+    int counter = myMap.count(22);
+    std::cout<<counter;
 
     // Testing with integers
     Collections::Queue<int> intQueue = {1, 2, 3, 4, 5};

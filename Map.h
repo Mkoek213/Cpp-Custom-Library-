@@ -30,10 +30,10 @@ public:
     }
     //Access to non-const sets:
     NodePtr<K, V> operator[](const K& key); //This operator is used to reference the element present at the position given inside the operator
-    NodePtr<K, V> find(const V& value); //returns the iterator to the element specified if found, else return nullptr
-    int count(const V& value); //Returns the number of matches to element with key-value ‘g’ in the map
+    NodePtr<K, V> find(const K& key); //returns the iterator to the element specified if found, else return nullptr
+    int count(const K& key); //Returns the number of matches to element with key-value ‘g’ in the map
     //Modifiers:
-    Map& operator=(const Map& other); //Assigns contents of a container to a different container, replacing its current content
+    void operator=(const Collections::Map<K, V>& other); //Assigns contents of a container to a different container, replacing its current content
     void insert(const K& key, const V& value); //insert the specified element in the map
     void erase(NodePtr<K, V> position); // Removes the element at the position pointed by the iterator.
     void erase(const K& key); //Removes the key-value from the map.
@@ -46,6 +46,42 @@ public:
     NodePtr<K, V> begin(); //returns pointer to the first element
     NodePtr<K, V> end(); //returns pointer to the last element
 };
+}
+
+template <typename K, typename V>
+NodePtr<K, V> Collections::Map<K, V>::operator[](const K& key){
+    NodePtr<K, V> search_node = tree->searchTree(key);
+    if (search_node != tree->getTNULL()){
+        return search_node;
+    }else{
+        return nullptr;
+    }
+}
+
+template <typename K, typename V>
+NodePtr<K, V> Collections::Map<K, V>::find(const K& key){
+    NodePtr<K, V> search_node = tree->searchTree(key);
+    if (search_node != tree->getTNULL()){
+        return search_node;
+    }else{
+        return nullptr;
+    }
+}
+
+template <typename K, typename V>
+int Collections::Map<K, V>::count(const K& key){
+    return tree->countOccurence(key);
+}
+
+template <typename K, typename V>
+void Collections::Map<K, V>::operator=(const Collections::Map<K, V>& map_to_swap) {
+    if (map_to_swap.tree) {
+        delete this->tree;
+        this->tree = new RedBlackTree<K, V>(*map_to_swap.tree);
+    } else {
+        this->tree = nullptr;  
+    }
+    this->size = map_to_swap.size;
 }
 
 template <typename K, typename V>

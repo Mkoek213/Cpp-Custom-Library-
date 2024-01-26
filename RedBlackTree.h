@@ -2,6 +2,7 @@
 #ifndef R_B_TREE_H
 #define R_B_TREE_H  
 #include <iostream>
+#include <vector>
 using namespace std;
 
 template <typename K, typename V>
@@ -143,6 +144,25 @@ class RedBlackTree{
             v->parent = u->parent;
         }
 
+        int countOccurenceHelper(NodePtr<K, V> node, K search_key){
+            std::vector <NodePtr<K, V>> tab;
+            NodePtr<K, V> curr = node;
+            int count = 0;
+            while (curr != TNULL or tab.size() != 0){
+                while (curr != TNULL){
+                    tab.push_back(curr);
+                    curr = curr->left;
+                }
+                curr = tab[tab.size() - 1];
+                tab.pop_back();
+                if (curr->key == search_key){
+                    count++;
+                }
+                curr = curr->right;
+            }
+            return count;
+        }
+
         void deleteNodeHelper(NodePtr<K, V> node, K search_key){
             NodePtr<K, V> z = TNULL; //The node to be deleted from the Red-Black Tree.
             NodePtr<K, V> x; //The node that will be spliced out or removed from the Red-Black Tree. It is typically the minimum node in the right subtree of z or the maximum node in the left subtree of z.
@@ -277,6 +297,10 @@ class RedBlackTree{
                 postOrderHelper(this->root);
             }
 
+            NodePtr<K, V> getTNULL(){
+                return this->TNULL;
+            }
+
             NodePtr<K, V> searchTree(K search_key){
                 return searchTreeHelper(this->root, search_key);
             }
@@ -300,6 +324,7 @@ class RedBlackTree{
                     return minimum(node->right);
                 }
                 NodePtr<K, V> y = node->parent;
+                  
                 while (y != TNULL && node == y->right){
                     node = y;
                     y = y->parent;
@@ -397,6 +422,10 @@ class RedBlackTree{
 
             NodePtr<K, V> getRoot(){
                 return this->root;
+            }
+
+            int countOccurence(K search_key){
+                return countOccurenceHelper(this->root, search_key);
             }
 
             void deleteNode(K key){
