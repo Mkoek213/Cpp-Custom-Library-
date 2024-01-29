@@ -10,14 +10,43 @@
 
 
 int main() {
-    Collections::Map<int, std::string> myMap = {{1, "One"}, {2, "One"},{1, "One"},{2, "two"}, {2, "Two"}, {3, "Three"}};
-    Collections::Map<int, std::string> myMap2 = {{65, "Oasdadne"}, {111, "asdad"},{1, "asdadsa"},{1, "ad"}, {22, "sadad"}, {5, "aaa"}};
-    auto it = myMap.end();
-    myMap = myMap2;
-    auto it2 = myMap.find(1);
-    std::cout<<it2->value;
-    int counter = myMap.count(22);
-    std::cout<<counter;
+    // Test the Map class
+    Collections::Map<int, std::string> myMap = {{1, "One"}, {2, "Two"}, {3, "Three"}};
+
+    // Test insert and get_size
+    std::cout << "Size of the map: " << myMap.get_size() << std::endl;
+
+    // Test operator[]
+    NodePtr<int, std::string> node = myMap[2];
+    if (node) {
+        std::cout << "Value at key 2: " << node->value << std::endl;
+    } else {
+        std::cout << "Key 2 not found." << std::endl;
+    }
+
+    // Test find
+    node = myMap.find(3);
+    if (node) {
+        std::cout << "Key 3 found: " << node->value << std::endl;
+    } else {
+        std::cout << "Key 3 not found." << std::endl;
+    }
+
+    // Test is_in
+    bool isInMap = myMap.is_in(node);
+    std::cout << "Is the found node in the map? " << (isInMap ? "Yes" : "No") << std::endl;
+
+    // Test count
+    int countForKey2 = myMap.count(2);
+    std::cout << "Count for key 2: " << countForKey2 << std::endl;
+
+    // Test erase by key
+    myMap.erase(2);
+    std::cout << "Size after erasing key 2: " << myMap.get_size() << std::endl;
+
+    // Test clear
+    myMap.clear();
+    std::cout << "Size after clearing the map: " << myMap.get_size() << std::endl;
 
     // Testing with integers
     Collections::Queue<int> intQueue = {1, 2, 3, 4, 5};
