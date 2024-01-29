@@ -163,13 +163,29 @@ class RedBlackTree{
             return count;
         }
 
-        void deleteNodeHelper(NodePtr<K, V> node, K search_key){
+        //function to check if node appears in tree by its adress
+        bool isNodeInTreeHelper(NodePtr<K, V> root, NodePtr<K, V> target_node){
+            if (root == TNULL || target_node == TNULL){
+                return false;
+            }
+            if (root == target_node){
+                return true;
+            }
+
+            bool leftSearch = isNodeInTreeHelper(root->left, target_node);
+            bool rightSearch = isNodeInTreeHelper(root->right, target_node);
+            return leftSearch || rightSearch;
+        }
+
+        void deleteNodeHelper(NodePtr<K, V> node, K search_key, size_t &map_size){
             NodePtr<K, V> z = TNULL; //The node to be deleted from the Red-Black Tree.
             NodePtr<K, V> x; //The node that will be spliced out or removed from the Red-Black Tree. It is typically the minimum node in the right subtree of z or the maximum node in the left subtree of z.
             NodePtr<K, V> y; //A temporary node used during the deletion process. It may represent the node that replaces z in the Red-Black Tree.
             while (node != TNULL){
                 if (node->key == search_key){
                     z = node;
+                    map_size--;
+                    break;
                 }
                 if (node->key <= search_key){
                     node = node->right;
@@ -179,16 +195,15 @@ class RedBlackTree{
             }
 
             if (z == TNULL){
-                cout << "Key not found in the tree" << endl;
-                return;
+                throw std::runtime_error("Key not found in the map");
             }
 
             y = z;
             int y_original_color = y->color;
-            if (z->left = TNULL){
+            if (z->left == TNULL){
                 x = z->right;
                 transplant(z, z->right);
-            }else if (z->right = TNULL){
+            }else if (z->right == TNULL){
                 x = z->left;
                 transplant(z, z->left);
             }else{
@@ -428,8 +443,23 @@ class RedBlackTree{
                 return countOccurenceHelper(this->root, search_key);
             }
 
-            void deleteNode(K key){
-                deleteNodeHelper(this->root, key);
+            void deleteNodeByPointer(NodePtr<K, V> node_to_remove, size_t &map_size){
+                if (isNodeInTreeHelper(this->root, node_to_remove)){
+                    K key = node_to_remove->key;
+                    deleteNodeHelper(this->root, key, map_size);
+                }else{
+                    throw std::runtime_error("Element not found in map");
+                }
+            }
+
+            bool isNodeInTree(NodePtr<K, V> target_node){
+                return isNodeInTreeHelper(this->root, target_node);
+            }
+
+            void deleteNodeByKey(K key, size_t &map_size){
+                while (countOccurenceHelper(this->root, key) != 0){
+                    deleteNodeHelper(this->root, key, map_size);
+                }
             }
 
             void clear(){
