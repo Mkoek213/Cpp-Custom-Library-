@@ -29,8 +29,8 @@ namespace Collections{
                 clear();
             }
             //Access to non-const list:
-            T& get_front(); //Returns the value of the first element in the list.
-            T& get_back(); //Returns the value of the last element in the list.
+            Node* get_front(); //Returns the value of the first element in the list.
+            Node* get_back(); //Returns the value of the last element in the list.
             void display_list(); //Function to display list.
             //Capacity getters:
             size_t get_size()const; //Returns the number of elements in the list.
@@ -39,13 +39,13 @@ namespace Collections{
             void operator=(Collections::List<T>& list_to_replace); //This operator is used to assign new contents to the container by replacing the existing contents.
             void swap(Collections::List<T>& list_to_replace); //This function is used to swap the contents of one list with another list of the same type.
             void merge(Collections::List<T>& list_to_merge); //Merges two sorted lists into one.
-            static void merge(Collections::List<T>& first_to_merge, Collections::List<T>& second_to_merge); //Merges two sorted lists into one.
+            static Collections::List<T> merge(Collections::List<T>& first_to_merge, Collections::List<T>& second_to_merge); //Merges two sorted lists into one.
             void push_front(const T& new_elem); //Adds a new element ‘new_elem’ at the beginning of the list.
             void push_back(const T& new_elem); //Adds a new element ‘new_elem’ at the end of the list.
             void pop_front(); //Removes the first element of the list, and reduces the size of the list by 1.
             void pop_back(); //Removes the last element of the list, and reduces the size of the list by 1.
             void insert(const T& new_elem, size_t index); //Inserts new elements in the list before the element at a specified position.
-            void erase(Node* node_to_erase); //Removes a single element from the list.
+            void erase(size_t index); //Removes a single element from the list by index.
             void reverse(); //Reverses the list.
             void sort(); //Sorts the list in increasing order.
             void unique(); //Removes all duplicate consecutive elements from the list.
@@ -70,6 +70,110 @@ namespace Collections{
 }
 
 template <typename T>
+typename Collections::List<T>::Node* Collections::List<T>::get_front(){
+    return this->head;
+}
+
+template <typename T>
+typename Collections::List<T>::Node* Collections::List<T>::get_back(){
+    if (this->head == nullptr){
+        return this->head;
+    }
+    Node* curr_node = this->head;
+    while (curr_node->next != nullptr){
+        curr_node = curr_node->next;
+    }
+    return curr_node;
+}
+
+template <typename T>
+void Collections::List<T>::display_list(){
+    if (this->head == nullptr){
+        return;
+    }
+    Node* curr_node = this->head;
+    while (curr_node->next != nullptr){
+        std::cout<<curr_node->value<<" ";
+        curr_node = curr_node->next;
+    }
+    std::cout<<curr_node->value<<" ";
+}
+
+template <typename T>
+size_t Collections::List<T>::get_size()const{
+    return this->size;
+}
+
+template <typename T>
+bool Collections::List<T>::empty()const{
+    return this->size == 0;
+}
+
+template <typename T>
+void Collections::List<T>::operator=(Collections::List<T>& list_to_replace){
+    if (this == &list_to_replace){
+        return;
+    }
+    this->clear();
+    Node* curr_node = list_to_replace.head;
+    while (curr_node != nullptr){
+        push_back(curr_node->value);
+        curr_node = curr_node->next;
+    }
+}
+
+template <typename T>
+void Collections::List<T>::swap(Collections::List<T>& list_to_swap){
+    if (this == &list_to_swap) {
+        return;
+    }
+    Node* temp_head = this->head;
+    this->head = list_to_swap.head;
+    list_to_swap.head = temp_head;
+    size_t temp_size = this->size;
+    this->size = list_to_swap.size;
+    list_to_swap.size = temp_size;
+}
+
+template <typename T>
+void Collections::List<T>::merge(Collections::List<T>& list_to_merge){
+    Node* curr_node = list_to_merge.head;
+    while (curr_node != nullptr){
+        push_back(curr_node->value);
+        curr_node = curr_node->next;
+    }
+}
+
+template <typename T>
+Collections::List<T> Collections::List<T>::merge(Collections::List<T>& first_to_merge, Collections::List<T>& second_to_merge){
+    Collections::List<int> new_list;
+    Node* curr_node = first_to_merge.head;
+    while (curr_node != nullptr){
+        new_list.push_back(curr_node->value);
+        curr_node = curr_node->next;
+    }
+    curr_node = second_to_merge.head;
+    while(curr_node != nullptr){
+        new_list.push_back(curr_node->value);
+        curr_node = curr_node->next;
+    }
+    return new_list;
+}
+
+template <typename T>
+void Collections::List<T>::push_front(const T& value){
+    Node* new_node = newNode(value);
+    if (this->head == nullptr){
+        this->head = new_node;
+    }else{
+        new_node->next = this->head;
+        this->head->prev = new_node;
+        this->head = new_node;
+    }
+    this->size++;
+}
+
+template <typename T>
 void Collections::List<T>::push_back(const T& new_elem){
     Node* new_node = newNode(new_elem);
     if (this->head == nullptr){
@@ -83,6 +187,53 @@ void Collections::List<T>::push_back(const T& new_elem){
         new_node->prev = curr;
     }
     this->size++;
+}
+
+template <typename T>
+void Collections::List<T>::pop_front(){
+    if (this->head == nullptr){
+        throw std::runtime_error("Can not pop from empty list");
+    }else{
+        this->head = this->head->next;
+    }
+    this->size--;
+}
+
+template <typename T>
+void Collections::List<T>::pop_back(){
+    if (this->head == nullptr){
+        throw std::runtime_error("Can not pop from empty list");
+    }else if (this->head->next == nullptr){
+        this->head = nullptr;
+    }else{
+        Node* curr_node = this->head;
+        while (curr_node->next != nullptr){
+            curr_node = curr_node->next;
+        }
+        curr_node->prev->next = nullptr;
+    }
+    this->size--;
+}
+
+template <typename T>
+void Collections::List<T>::insert(const T& new_elem, size_t index){
+    if (index >= this->size){
+        throw std::out_of_range("Index out of range");
+    }
+    if (index == 0){
+        this->push_front(new_elem);
+    }else{
+        Node* new_node = newNode(new_elem);
+        Node* curr_node = this->head;
+        for (size_t i = 0; i < index - 1; i++){
+            curr_node = curr_node->next;
+        }
+        curr_node->next->prev = new_node;
+        new_node->next = curr_node->next;
+        new_node->prev = curr_node;
+        curr_node->next = new_node;
+        this->size++;
+    }
 }
 
 template <typename T>
