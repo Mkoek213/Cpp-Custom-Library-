@@ -10,9 +10,25 @@
 
 
 int main(){
-    Collections::List<int> list = {1,2,3,4};
+    Collections::List<int> list = {1,2,3};
+    Collections::List<int> list2 = {4};
+    auto it = list.get_front();
+    auto back = list.get_back();
+    // list2.merge(list);
+    // list2.push_front(99);
+    list2.display_list();
+    size_t size = list2.get_size();
+    std::cout<<size;
+    Collections::List<int> list_merged = Collections::List<int>::merge(list, list2);
+    if (list.empty() == true){
+        std::cout<<"aaaa";
+    }
+    list_merged.push_front(6);
+    // list_merged.pop_front();
+    list2.pop_back();
+    list_merged.insert(5, 0);
+    list_merged.display_list();
     list.clear();
-
     return 0;
 }
 
