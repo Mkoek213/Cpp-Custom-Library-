@@ -10,24 +10,43 @@
 
 
 int main(){
-    Collections::List<int> list = {1,2,3};
-    Collections::List<int> list2 = {4};
+    Collections::List<int> list = {1, 2, 2,2,2 ,2,2 };
+    Collections::List<int> list3 = {1,2,3, 2, 2, 4, 5, 2};
+    Collections::List<int> list2 = {3, 32131, 312, 23, 2323, 232, };
     auto it = list.get_front();
     auto back = list.get_back();
     // list2.merge(list);
     // list2.push_front(99);
-    list2.display_list();
-    size_t size = list2.get_size();
-    std::cout<<size;
-    Collections::List<int> list_merged = Collections::List<int>::merge(list, list2);
-    if (list.empty() == true){
-        std::cout<<"aaaa";
-    }
-    list_merged.push_front(6);
-    // list_merged.pop_front();
-    list2.pop_back();
-    list_merged.insert(5, 0);
-    list_merged.display_list();
+    // list2.erase(0);
+    // std::cout<<"\n\n\n";
+    // list2.display_list();
+    // std::cout<<"\naaa\n\n";
+    // size_t size = list2.get_size();
+    // std::cout<<size;
+    // Collections::List<int> list_merged = Collections::List<int>::merge(list, list2);
+    // if (list.empty() == true){
+    //     std::cout<<"aaaa";
+    // }
+    // list_merged.push_front(6);
+    // // list_merged.pop_front();
+    // // list2.pop_back();
+    // list_merged.insert(5, 0);
+    // std::cout<<"\n\n\n";
+    // list_merged.display_list();
+    // std::cout<<"\n\n\n";
+    // list_merged.erase(0);
+    // list_merged.display_list();
+    // std::cout<<"\n\n\n";
+    // std::cout<<"\n\n\n";
+    // list_merged.reverse();
+    // list_merged.display_list();
+    std::cout<<"\n\n\n";
+    list.unique();
+    list.display_list();
+    std::cout<<list.get_size();
+    std::cout<<"\n\n\n";
+    auto it5 = list3.begin();
+    auto it7 = list3.end();
     list.clear();
     return 0;
 }
