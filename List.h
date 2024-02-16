@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <cstring>
 #include <algorithm>
+#include <set>
 
 
 namespace Collections{
@@ -47,7 +48,7 @@ namespace Collections{
             void insert(const T& new_elem, size_t index); //Inserts new elements in the list before the element at a specified position.
             void erase(size_t index); //Removes a single element from the list by index.
             void reverse(); //Reverses the list.
-            void sort(); //Sorts the list in increasing order.
+            void sort(bool ascending = true); //Sorts the list in increasing order by default, can change ascending to false
             void unique(); //Removes all duplicate consecutive elements from the list.
             void clear(); //clear() function is used to remove all the elements of the list container, thus making it size 0.
             //Iterators:
@@ -65,6 +66,50 @@ namespace Collections{
                     std::cerr << "Heap Overflow: " << e.what() << std::endl;
                     exit(EXIT_FAILURE);
                 }
+            }
+
+            Node* merge(Node* list1, Node* list2){ //list1 and list2 are head pointers
+                if (list1 == nullptr){
+                    return list2;
+                }
+                if (list2 == nullptr){
+                    return list1;
+                }
+                if (list1->value < list2->value){
+                    list1->next = merge(list1->next, list2);
+                    list1->next->prev = list1;
+                    list1->prev = nullptr;
+                    return list1;
+                }else{
+                    list2->next = merge(list1, list2->next);
+                    list2->next->prev = list2;
+                    list2->prev = nullptr;
+                    return list2;
+                }
+            }
+
+            Node* mergeSort(Node* temp_head){
+                if (temp_head == nullptr || temp_head->next == nullptr){
+                    return temp_head;
+                }
+
+                Node* second = split(temp_head);
+
+                temp_head = mergeSort(temp_head);
+                second = mergeSort(second);
+                return merge(temp_head, second);
+            }
+
+            Node* split(Node* temp_head){
+                Node* fast = temp_head;
+                Node* slow = temp_head;
+                while (fast->next != nullptr && fast->next->next != nullptr){
+                    fast = fast->next->next;
+                    slow = slow->next;
+                }
+                Node* temp = slow->next;
+                slow->next = nullptr;
+                return temp;
             }
     };
 }
@@ -237,6 +282,82 @@ void Collections::List<T>::insert(const T& new_elem, size_t index){
 }
 
 template <typename T>
+void Collections::List<T>::erase(size_t index){
+    if (index >= this->size){
+        throw std::out_of_range("Index out of range");
+    }
+    if (index == 0){
+        this->head = this->head->next;
+    }else{
+    Node* before_to_delete = this->head;
+    for (size_t i = 0; i < index - 1; i++){
+        before_to_delete = before_to_delete->next;
+    }
+    Node* temp = before_to_delete->next;
+    before_to_delete->next = temp->next;
+    delete temp;
+    }
+    this->size--;
+}
+
+template <typename T>
+void Collections::List<T>::reverse(){
+    if (this->size == 0 || this->size == 1){
+        return;
+    }
+    Node* prev_node = this->head;
+    Node* temp_node = this->head;
+    Node* curr_node = this->head->next;
+    prev_node->next = nullptr;
+
+    while (curr_node != nullptr){
+        temp_node = curr_node->next;
+        curr_node->next = prev_node;
+        prev_node->prev = curr_node;
+        prev_node = curr_node;
+        curr_node = temp_node;
+    }
+    this->head = prev_node;
+}
+
+template <typename T>
+void Collections::List<T>::sort(bool ascending){
+    if (this->size == 0 || this->size == 1){
+        return;
+    }
+    if (ascending){
+        Node* new_head = mergeSort(this->head);
+        this->head = new_head;
+    }
+}
+
+template <typename T>
+void Collections::List<T>::unique(){
+    if (this->size == 0 || this->size == 1){
+        return;
+    }
+    std::set<T> set;
+    Node* curr_node = this->head;
+    while (curr_node != nullptr){
+        if (set.count(curr_node->value) == 1){
+            Node* temp = curr_node;
+            curr_node = curr_node->next;
+            if (temp->prev != nullptr){
+                temp->prev->next = temp->next;
+            }
+            if (temp->next != nullptr){
+                temp->next->prev = temp->prev;
+            }
+            delete temp;
+            this->size--;
+        }else{
+            set.insert(curr_node->value);
+            curr_node = curr_node->next;
+        }
+    }
+}
+
+template <typename T>
 void Collections::List<T>::clear(){
     while (this->head != nullptr){
         Node* temp = this->head;
@@ -244,4 +365,18 @@ void Collections::List<T>::clear(){
         delete temp;
     }
     this->size = 0;
+}
+
+template <typename T>
+T* Collections::List<T>::begin(){
+    return &this->head->value;
+}
+
+template <typename T>
+T* Collections::List<T>::end(){
+    Node* temp = this->head;
+    while (temp->next != nullptr){
+        temp = temp->next;
+    }
+    return &temp->value;
 }
