@@ -54,7 +54,7 @@ namespace Collections{
             //Iterators:
             Node* begin(); //begin() function returns an iterator pointing to the first element of the list.
             Node* end(); //end() function returns an iterator pointing to the theoretical last element which follows the last element.
-
+        private:
             Node* head;
             size_t size;
 
