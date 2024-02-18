@@ -6,11 +6,79 @@
 #include "RedBlackTree.h"
 #include "Map.h"
 #include "List.h"
+#include "BST.h"
 
 
 
-int main(){
-    
+int main() {
+    // Create a BST object with some initial values
+    Collections::BST<int> bst = {50, 30, 70, 20, 40, 60, 80};
+
+    // Test non-static member functions
+    std::cout << "Inorder Traversal: ";
+    bst.inorder_traversal();
+    std::cout << std::endl;
+
+    std::cout << "Preorder Traversal: ";
+    bst.preorder_traversal();
+    std::cout << std::endl;
+
+    std::cout << "Postorder Traversal: ";
+    bst.postorder_traversal();
+    std::cout << std::endl;
+
+    std::cout << "Level 3: ";
+    bst.print_level(3);
+    std::cout << std::endl;
+
+    std::cout << "Leaf Nodes: ";
+    bst.print_leafs();
+    std::cout << std::endl;
+
+    std::cout << "Smallest Node: " << bst.get_smallest()->key << std::endl;
+    std::cout << "Largest Node: " << bst.get_largest()->key << std::endl;
+
+    auto search_result = bst.search(40);
+    if (search_result)
+        std::cout << "Search Found: " << search_result->key << std::endl;
+    else
+        std::cout << "Search Not Found" << std::endl;
+
+    std::cout << "Size of BST: " << bst.get_size() << std::endl;
+    std::cout << "Height of BST: " << bst.get_height() << std::endl;
+
+    // Test static member functions
+    std::cout << "Inorder Traversal (static): ";
+    Collections::BST<int>::inorder_traversal(bst.begin());
+    std::cout << std::endl;
+
+    std::cout << "Preorder Traversal (static): ";
+    Collections::BST<int>::preorder_traversal(bst.begin());
+    std::cout << std::endl;
+
+    std::cout << "Postorder Traversal (static): ";
+    Collections::BST<int>::postorder_traversal(bst.begin());
+    std::cout << std::endl;
+
+    std::cout << "Level 3 (static): ";
+    Collections::BST<int>::print_level(bst.begin(), 3);
+    std::cout << std::endl;
+
+    std::cout << "Leaf Nodes (static): ";
+    Collections::BST<int>::print_leafs(bst.begin());
+    std::cout << std::endl;
+
+    std::cout << "Smallest Node (static): " << Collections::BST<int>::get_smallest(bst.begin())->key << std::endl;
+    std::cout << "Largest Node (static): " << Collections::BST<int>::get_largest(bst.begin())->key << std::endl;
+
+    auto static_search_result = Collections::BST<int>::search(bst.begin(), 40);
+    if (static_search_result)
+        std::cout << "Search Found (static): " << static_search_result->key << std::endl;
+    else
+        std::cout << "Search Not Found (static)" << std::endl;
+
+    std::cout << "Height of BST (static): " << Collections::BST<int>::get_height(bst.begin()) << std::endl;
+
     return 0;
 }
 
