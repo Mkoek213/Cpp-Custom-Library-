@@ -52,8 +52,8 @@ namespace Collections{
             void unique(); //Removes all duplicate consecutive elements from the list.
             void clear(); //clear() function is used to remove all the elements of the list container, thus making it size 0.
             //Iterators:
-            T* begin(); //begin() function returns an iterator pointing to the first element of the list.
-            T* end(); //end() function returns an iterator pointing to the theoretical last element which follows the last element.
+            Node* begin(); //begin() function returns an iterator pointing to the first element of the list.
+            Node* end(); //end() function returns an iterator pointing to the theoretical last element which follows the last element.
 
             Node* head;
             size_t size;
@@ -368,15 +368,15 @@ void Collections::List<T>::clear(){
 }
 
 template <typename T>
-T* Collections::List<T>::begin(){
-    return &this->head->value;
+typename Collections::List<T>::Node* Collections::List<T>::begin(){
+    return this->head;
 }
 
 template <typename T>
-T* Collections::List<T>::end(){
+typename Collections::List<T>::Node* Collections::List<T>::end(){
     Node* temp = this->head;
     while (temp->next != nullptr){
         temp = temp->next;
     }
-    return &temp->value;
+    return temp;
 }
