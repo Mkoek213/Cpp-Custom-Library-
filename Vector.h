@@ -279,7 +279,7 @@ T* Collections::Vector<T>::end(){
     if (size == 0){
         throw std::runtime_error("Vector is empty");
     }
-    return (T*)(vec + size - 1);
+    return (T*)(vec + size);
 }
 
 #endif

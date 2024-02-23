@@ -353,7 +353,7 @@ class RedBlackTree{
                 }
 
                 NodePtr<K, V> y = node->parent;
-                while (y != TNULL && node = y->left){
+                while (y != TNULL && node == y->left){
                     node = y;
                     y = y->parent;
                 }

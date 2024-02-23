@@ -118,7 +118,7 @@ size_t Collections::Map<K, V>::get_size()const{
 
 template <typename K, typename V>
 bool Collections::Map<K, V>::empty()const{
-    return this->size;
+    return (this->size == 0);
 }
 
 template <typename K, typename V>

@@ -48,7 +48,7 @@ namespace Collections{
             void insert(const T& new_elem, size_t index); //Inserts new elements in the list before the element at a specified position.
             void erase(size_t index); //Removes a single element from the list by index.
             void reverse(); //Reverses the list.
-            void sort(bool ascending = true); //Sorts the list in increasing order by default, can change ascending to false
+            void sort(); //Sorts the list in increasing order.
             void unique(); //Removes all duplicate consecutive elements from the list.
             void clear(); //clear() function is used to remove all the elements of the list container, thus making it size 0.
             //Iterators:
@@ -321,14 +321,12 @@ void Collections::List<T>::reverse(){
 }
 
 template <typename T>
-void Collections::List<T>::sort(bool ascending){
+void Collections::List<T>::sort(){
     if (this->size == 0 || this->size == 1){
         return;
     }
-    if (ascending){
-        Node* new_head = mergeSort(this->head);
-        this->head = new_head;
-    }
+    Node* new_head = mergeSort(this->head);
+    this->head = new_head;
 }
 
 template <typename T>
