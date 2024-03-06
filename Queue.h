@@ -34,7 +34,7 @@ namespace Collections{
             void swap(Collections::Queue<T>& que_to_swap); //exchange the contents of two queues but the queues must be of the same value type, although sizes may differ.
             static void swap(Collections::Queue<T>& que1_to_swap, Collections::Queue<T>& que2_to_swap); //same as above
             void display()const; //display the queue
-            static void display(Collections::Queue<T>& que_to_display);
+            static void display(const Collections::Queue<T>& que_to_display);
             //Iterators:
             T* begin(); //returns pointer to the first element
             T* end(); //returns pointer to the last element
@@ -162,7 +162,7 @@ void Collections::Queue<T>::display()const{
 }
 
 template <typename T>
-void Collections::Queue<T>::display(Collections::Queue<T>& que_to_display){
+void Collections::Queue<T>::display(const Collections::Queue<T>& que_to_display){
     Node* current = que_to_display.front;
     while (current != nullptr){
         std::cout << current->value << " ";

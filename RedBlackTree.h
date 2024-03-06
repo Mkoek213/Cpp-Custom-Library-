@@ -34,7 +34,7 @@ class RedBlackTree{
         }
 
         // Preorder
-        void preOrderHelper(NodePtr<K, V> node){
+        void preOrderHelper(const NodePtr<K, V> node)const{
             if (node != TNULL){
                 cout << node->value << " ";
                 preOrderHelper(node->left);
@@ -43,7 +43,7 @@ class RedBlackTree{
         }
 
         //Inorder
-        void inOrderHelper(NodePtr<K, V> node){
+        void inOrderHelper(const NodePtr<K, V> node)const{
             if (node != TNULL){
                 inOrderHelper(node->left);
                 cout << node->value << " ";
@@ -52,7 +52,7 @@ class RedBlackTree{
         }
 
         // Post order
-        void postOrderHelper(NodePtr<K, V> node){
+        void postOrderHelper(const NodePtr<K, V> node)const{
             if (node != TNULL){
                 postOrderHelper(node->left);
                 postOrderHelper(node->right);
@@ -144,7 +144,7 @@ class RedBlackTree{
             v->parent = u->parent;
         }
 
-        int countOccurenceHelper(NodePtr<K, V> node, K search_key){
+        int countOccurenceHelper(const NodePtr<K, V> node,const K search_key){
             std::vector <NodePtr<K, V>> tab;
             NodePtr<K, V> curr = node;
             int count = 0;
@@ -274,7 +274,7 @@ class RedBlackTree{
             root->color = 0;
         }
 
-        void printHelper(NodePtr<K, V> root, string indent, bool last){
+        void printHelper(const NodePtr<K, V> root,string indent,const bool last){
             if (root != TNULL){
                 cout << indent;
                 if (last){
@@ -300,15 +300,15 @@ class RedBlackTree{
                 root = TNULL;
             }
 
-            void preorder(){
+            void preorder()const{
                 preOrderHelper(this->root);
             }
 
-            void inorder(){
+            void inorder()const{
                 inOrderHelper(this->root);
             }
 
-            void postorder(){
+            void postorder()const{
                 postOrderHelper(this->root);
             }
 
@@ -439,7 +439,7 @@ class RedBlackTree{
                 return this->root;
             }
 
-            int countOccurence(K search_key){
+            int countOccurence(const K search_key){
                 return countOccurenceHelper(this->root, search_key);
             }
 
@@ -452,7 +452,7 @@ class RedBlackTree{
                 }
             }
 
-            bool isNodeInTree(NodePtr<K, V> target_node){
+            bool isNodeInTree(const NodePtr<K, V> target_node){
                 return isNodeInTreeHelper(this->root, target_node);
             }
 
@@ -466,7 +466,7 @@ class RedBlackTree{
                 this->root = nullptr;
             }
 
-            void printTree(){
+            void printTree()const{
                 if (root){
                     printHelper(this->root, "", true);
                 }
