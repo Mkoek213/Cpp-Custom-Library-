@@ -30,16 +30,16 @@ namespace Collections{
                 delete_BST(this->root);
             }
             //Access to non-const list:
-            void inorder_traversal(); //Function to display bst in non-decrasing order
-            static void inorder_traversal(Node* root); //Function to display bst in non-decrasing order
-            void preorder_traversal(); //Function to display bst. Preorder traversal first visits the root node and then traverses the left and the right subtree. It is used to create a copy of the tree.
-            static void preorder_traversal(Node* root); //Function to display bst. Preorder traversal first visits the root node and then traverses the left and the right subtree. It is used to create a copy of the tree.
-            void postorder_traversal(); //Function to display bst. Postorder traversal first traverses the left and the right subtree and then visits the root node. It is used to delete the tree.
-            static void postorder_traversal(Node* root); //Function to display bst. Postorder traversal first traverses the left and the right subtree and then visits the root node. It is used to delete the tree.
-            void print_level(size_t level); //It prints all the nodes at a particular level of the BST.
-            static void print_level(Node* root, size_t level); //It prints all the nodes at a particular level of the BST.
-            void print_leafs(); //It prints all leafs.
-            static void print_leafs(Node* root); //It prints all leafs.
+            void inorder_traversal()const; //Function to display bst in non-decrasing order
+            static void inorder_traversal(const Node* root); //Function to display bst in non-decrasing order
+            void preorder_traversal()const; //Function to display bst. Preorder traversal first visits the root node and then traverses the left and the right subtree. It is used to create a copy of the tree.
+            static void preorder_traversal(const Node* root); //Function to display bst. Preorder traversal first visits the root node and then traverses the left and the right subtree. It is used to create a copy of the tree.
+            void postorder_traversal()const; //Function to display bst. Postorder traversal first traverses the left and the right subtree and then visits the root node. It is used to delete the tree.
+            static void postorder_traversal(const Node* root); //Function to display bst. Postorder traversal first traverses the left and the right subtree and then visits the root node. It is used to delete the tree.
+            void print_level(const size_t level); //It prints all the nodes at a particular level of the BST.
+            static void print_level(const Node* root,const size_t level); //It prints all the nodes at a particular level of the BST.
+            void print_leafs()const; //It prints all leafs.
+            static void print_leafs(const Node* root); //It prints all leafs.
             Node* get_smallest(); //It is used to return the node with the smallest value in the BST.
             static Node* get_smallest(Node* root); //It is used to return the node with the smallest value in the BST.
             Node* get_largest(); //It is used to return the node with the largest value in the BST.
@@ -47,9 +47,9 @@ namespace Collections{
             Node* search(const T& key); //It is used to search for specific key in BST.
             static Node* search(Node* root, const T& key); //It is used to search for specific key in BST.
             // Capacity getters:
-            size_t get_size()const; //Returns the number of nodes in the bst.
+            size_t get_size(); //Returns the number of nodes in the bst.
             bool empty()const; //Returns whether the bst is empty(1) or not(0).
-            size_t get_height()const; //Returns height of BST.
+            size_t get_height(); //Returns height of BST.
             static size_t get_height(Node* root); //Returns height of BST.
             //Modifiers:
             void swap(Collections::BST<T>& bst); //This function is used to swap the contents of one list with another list of the same type.
@@ -62,7 +62,7 @@ namespace Collections{
             Node* root;
             size_t size;
 
-            Node* newNode(const T& key){
+            Node* newNode(const T& key)const{
                 try{
                     Node* node = new Node(key);
                     return node;
@@ -84,7 +84,7 @@ namespace Collections{
                 return root;
             }
 
-            Node* search_own(Node* root, const T& key){
+            Node* search_own(Node* root, const T& key)const{
                 if (root == nullptr || root->key == key){
                     return root;
                 }
@@ -94,7 +94,7 @@ namespace Collections{
                 return search_own(root->left, key);
             }
 
-            void inorder_traversal_own(Node* current){
+            void inorder_traversal_own(const Node* current)const{
                 if (current == nullptr){
                     return;
                 }
@@ -103,7 +103,7 @@ namespace Collections{
                 inorder_traversal_own(current->right);
             }
 
-            void preorder_traversal_own(Node* current){
+            void preorder_traversal_own(const Node* current)const{
                 if (current == nullptr){
                     return;
                 }
@@ -112,7 +112,7 @@ namespace Collections{
                 preorder_traversal_own(current->right);
             }
 
-            void postorder_traversal_own(Node* current){
+            void postorder_traversal_own(const Node* current)const{
                 if (current == nullptr){
                     return;
                 }
@@ -121,7 +121,7 @@ namespace Collections{
                 std::cout << current->key << " ";
             }
 
-            void print_level_own(Node* root, size_t level){
+            void print_level_own(const Node* root, const size_t level)const{
                 if (root == nullptr){
                     return;
                 }
@@ -132,7 +132,7 @@ namespace Collections{
                 print_level_own(root->right, level - 1);
             }
 
-            void print_leafs_own(Node* current){
+            void print_leafs_own(const Node* current)const{
                 if (current == nullptr){
                     return;
                 }
@@ -168,7 +168,7 @@ namespace Collections{
                 return current;
             }
 
-            size_t get_height_own(Node* current)const{
+            size_t get_height_own(const Node* current){
                 if (current == nullptr){
                     return 0;
                 }
@@ -218,12 +218,12 @@ namespace Collections{
 }
 
 template <typename T>
-void Collections::BST<T>::inorder_traversal(){
+void Collections::BST<T>::inorder_traversal()const{
     inorder_traversal_own(this->root);
 }
 
 template <typename T>
-void Collections::BST<T>::inorder_traversal(Node* bst){
+void Collections::BST<T>::inorder_traversal(const Node* bst){
     if (bst == nullptr){
         return;
     }
@@ -233,12 +233,12 @@ void Collections::BST<T>::inorder_traversal(Node* bst){
 }
 
 template <typename T>
-void Collections::BST<T>::preorder_traversal(){
+void Collections::BST<T>::preorder_traversal()const{
     preorder_traversal_own(this->root);
 }
 
 template <typename T>
-void Collections::BST<T>::preorder_traversal(Node* bst){
+void Collections::BST<T>::preorder_traversal(const Node* bst){
     if (bst == nullptr){
         return;
     }
@@ -248,12 +248,12 @@ void Collections::BST<T>::preorder_traversal(Node* bst){
 }
 
 template <typename T>
-void Collections::BST<T>::postorder_traversal(){
+void Collections::BST<T>::postorder_traversal()const{
     postorder_traversal_own(this->root);
 }
 
 template <typename T>
-void Collections::BST<T>::postorder_traversal(Node* bst){
+void Collections::BST<T>::postorder_traversal(const Node* bst){
     if (bst == nullptr){
         return;
     }
@@ -268,7 +268,7 @@ void Collections::BST<T>::print_level(size_t level){
 }
 
 template <typename T>
-void Collections::BST<T>::print_level(Node* bst, size_t level){
+void Collections::BST<T>::print_level(const Node* bst, const size_t level){
     if (bst == nullptr){
         return;
     }
@@ -280,12 +280,12 @@ void Collections::BST<T>::print_level(Node* bst, size_t level){
 }
 
 template <typename T>
-void Collections::BST<T>::print_leafs(){
+void Collections::BST<T>::print_leafs()const{
     print_leafs_own(this->root);
 }
 
 template <typename T>
-void Collections::BST<T>::print_leafs(Node* bst){
+void Collections::BST<T>::print_leafs(const Node* bst){
     if (bst == nullptr){
         return;
     }
@@ -350,7 +350,7 @@ typename Collections::BST<T>::Node* Collections::BST<T>::search(Node* bst, const
 }
 
 template <typename T>
-size_t Collections::BST<T>::get_size()const{
+size_t Collections::BST<T>::get_size(){
     return this->size;
 }
 
@@ -360,7 +360,7 @@ bool Collections::BST<T>::empty()const{
 }
 
 template <typename T>
-size_t Collections::BST<T>::get_height()const{
+size_t Collections::BST<T>::get_height(){
     return get_height_own(this->root);
 }
 
