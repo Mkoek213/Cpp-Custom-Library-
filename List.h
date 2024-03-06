@@ -32,7 +32,7 @@ namespace Collections{
             //Access to non-const list:
             Node* get_front(); //Returns the value of the first element in the list.
             Node* get_back(); //Returns the value of the last element in the list.
-            void display_list(); //Function to display list.
+            void display_list()const; //Function to display list.
             //Capacity getters:
             size_t get_size()const; //Returns the number of elements in the list.
             bool empty()const; //Returns whether the list is empty(1) or not(0).
@@ -132,7 +132,7 @@ typename Collections::List<T>::Node* Collections::List<T>::get_back(){
 }
 
 template <typename T>
-void Collections::List<T>::display_list(){
+void Collections::List<T>::display_list()const{
     if (this->head == nullptr){
         return;
     }
