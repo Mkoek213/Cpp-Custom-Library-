@@ -77,7 +77,7 @@ T& Collections::Vector<T>::operator[](size_t index){
     if (index >= size){
         throw std::out_of_range("Index out of range");
     }
-    return vec[index];
+    return *(vec + index);
 }
 
 template <typename T>
