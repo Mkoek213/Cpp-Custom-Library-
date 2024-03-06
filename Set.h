@@ -33,7 +33,7 @@ namespace Collections{
             void erase(const T& element_to_delete); //deletion of an element with a set value, if not found return nullptr
             void clear(); //deletes/clears all the elements from the set.
             void swap(Collections::Set<T>& set_to_swap); //swaps the elements of the two sets
-            void display();
+            void display()const;
             //Iterators:
             T* begin(); //returns pointer to the first element
             T* end(); //returns pointer to the last element
@@ -71,7 +71,7 @@ namespace Collections{
                 }
             }
 
-            void display(TreeNode* node){
+            void display(const TreeNode* node)const{
                 if (node != nullptr)
                 {
                     display(node->left);
@@ -169,7 +169,7 @@ namespace Collections{
                 }
             }
 
-            TreeNode* end(TreeNode* node){
+            TreeNode* end(TreeNode* node)const{
                 if (node != nullptr){
                     if (node->right == nullptr){
                         return node;
@@ -231,7 +231,7 @@ void Collections::Set<T>::swap(Collections::Set<T>& set_to_swap){
 }
 
 template <typename T>
-void Collections::Set<T>::display()
+void Collections::Set<T>::display()const
 {
     display(root);
 }
