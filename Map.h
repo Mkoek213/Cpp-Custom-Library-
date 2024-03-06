@@ -31,7 +31,7 @@ public:
     //Access to non-const sets:
     NodePtr<K, V> operator[](const K& key); //This operator is used to reference the element present at the position given inside the operator
     NodePtr<K, V> find(const K& key); //returns the iterator to the element specified if found, else return nullptr
-    bool is_in(NodePtr<K, V> node); //returns the iterator to the element specified if found, else return nullptr
+    bool is_in(const NodePtr<K, V> node)const; //returns the iterator to the element specified if found, else return nullptr
     int count(const K& key); //Returns the number of matches to element with key-value ‘g’ in the map
     //Modifiers:
     void operator=(const Collections::Map<K, V>& other); //Assigns contents of a container to a different container, replacing its current content
@@ -69,7 +69,7 @@ NodePtr<K, V> Collections::Map<K, V>::find(const K& key){
 }
 
 template <typename K, typename V>
-bool Collections::Map<K, V>::is_in(NodePtr<K, V> node){
+bool Collections::Map<K, V>::is_in(NodePtr<K, V> node)const{
     return this->tree->isNodeInTree(node);
 }
 
