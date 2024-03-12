@@ -1,5 +1,4 @@
-#ifndef SET_H
-#define SET_H  
+#pragma once
 #include <cstddef> 
 #include <initializer_list>
 #include <stdio.h>
@@ -10,18 +9,17 @@
 
 namespace Collections{
     template <typename T>
-    class Set{
+    class Set{ 
         public:
             //Constructors and destructors:
-            Set(): size(), root(nullptr) {} //default constructor
-            Set(std::initializer_list<T> values): size(), root(nullptr){ //constructor with values: Collections::set<int> set = {1,2,3,4,5}
+            Set(): size_(), root_(nullptr) {} //default constructor
+            Set(std::initializer_list<T> values): size_(), root_(nullptr){ //constructor with values: Collections::set<int> set = {1,2,3,4,5}
                 for (const T& value : values){
-                    root = insert(root, value);
+                    root_ = insert(root_, value);
                 }
             }
-            ~Set(){ //default destructor
-                clear(root);
-            }
+            ~Set(){} //default destructor
+            
             //Access to non-const sets:
             T* find(const T& value); //returns the iterator to the element specified if found, else return nullptr
             int count(const T& value); //returns 1 if the specified element is found, else 0
@@ -44,12 +42,12 @@ namespace Collections{
                 TreeNode* right;
                 TreeNode(const T& value) : value(value), left(nullptr), right(nullptr) {}
             };
-            size_t size;
-            TreeNode* root;
+            size_t size_;
+            TreeNode* root_;
 
             TreeNode* insert(TreeNode* node, const T& value){
                 if (node == nullptr){
-                    size++;
+                    size_++;
                     return new TreeNode(value);
                 }
                 if (value < node->value){
@@ -102,12 +100,12 @@ namespace Collections{
                 if (root2->left == nullptr){
                     TreeNode* temp = root2->right;
                     delete root2;
-                    size--;
+                    size_--;
                     return temp;
                 }else if (root2->right == nullptr){
                     TreeNode* temp = root2->left;
                     delete root2;
-                    size--;
+                    size_--;
                     return temp;
                 }
 
@@ -138,13 +136,13 @@ namespace Collections{
                     root2->value = successor->value;
 
                     delete successor;
-                    size--;
+                    size_--;
                     return root2;
                 }
             }
 
             void clear(TreeNode* node){
-                if (root != nullptr){
+                if (root_ != nullptr){
                     if (node->left != nullptr){
                         clear(node->left);
                     }
@@ -153,8 +151,8 @@ namespace Collections{
                     }
                     delete node;
                 }
-                root = nullptr;
-                size = 0;
+                root_ = nullptr;
+                size_ = 0;
             }
 
             TreeNode* begin(TreeNode* node){
@@ -185,69 +183,67 @@ namespace Collections{
 
 template <typename T>
 T* Collections::Set<T>::find(const T& value){
-    TreeNode* node = find(root, value);
+    TreeNode* node = find(root_, value);
     return &node->value;
 }
 
 template <typename T>
 int Collections::Set<T>::count(const T& value){
-    TreeNode* node = find(root, value);
+    TreeNode* node = find(root_, value);
     return (node != nullptr)? 1 : 0;
 }
 
 template <typename T>
 size_t Collections::Set<T>::get_size()const{
-    return size;
+    return size_;
 }
 
 template <typename T>
 bool Collections::Set<T>::empty()const{
-    return size == 0;
+    return size_ == 0;
 }
 
 template <typename T>
 void Collections::Set<T>::insert(const T& value){
-    root = insert(root, value);
+    root_ = insert(root_, value);
 }
 
 template <typename T>
 void Collections::Set<T>::erase(const T& value){
-    root = erase(root, value);
+    root_ = erase(root_, value);
 }
 
 template <typename T>
 void Collections::Set<T>::clear(){
-    clear(root);
+    clear(root_);
 }
 
 template <typename T>
 void Collections::Set<T>::swap(Collections::Set<T>& set_to_swap){
-    TreeNode* temp_root = this->root;
-    this->root = set_to_swap.root;
-    set_to_swap.root = temp_root;
-    size_t temp_size = this->size;
-    this->size = set_to_swap.size;
-    set_to_swap.size = temp_size;
+    TreeNode* temp_root = this->root_;
+    this->root_ = set_to_swap.root_;
+    set_to_swap.root_ = temp_root;
+    size_t temp_size = this->size_;
+    this->size_ = set_to_swap.size_;
+    set_to_swap.size_ = temp_size;
 }
 
 template <typename T>
 void Collections::Set<T>::display()const
 {
-    display(root);
+    display(root_);
 }
 
 template <typename T>
 T* Collections::Set<T>::begin()
 {
-    TreeNode* node = begin(root);
+    TreeNode* node = begin(root_);
     return &node->value;
 }
 
 template <typename T>
 T* Collections::Set<T>::end()
 {
-    TreeNode* node = end(root);
+    TreeNode* node = end(root_);
     return &node->value;
 }
-
-#endif
