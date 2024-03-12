@@ -20,15 +20,14 @@ namespace Collections{
             };
         public:
             //Constructors and destructors:
-            BST(): size(), root(nullptr) {} //default constructor
-            BST(std::initializer_list<T> keys): size(), root(nullptr){ //constructor with values: Collections::BST<int> bst = {1,2,3,4,5}
+            BST(): size_(), root_(nullptr) {} //default constructor
+            BST(std::initializer_list<T> keys): size_(), root_(nullptr){ //constructor with values: Collections::BST<int> bst = {1,2,3,4,5}
                 for (const T& key : keys){
                     insert(key);
                 }
             }
-            ~BST(){ //default destructor
-                delete_BST(this->root);
-            }
+            ~BST(){} //default destructor
+            
             //Access to non-const list:
             void inorder_traversal()const; //Function to display bst in non-decrasing order
             static void inorder_traversal(const Node* root); //Function to display bst in non-decrasing order
@@ -59,8 +58,8 @@ namespace Collections{
             Node* begin(); //begin() function returns an iterator pointing to the root of the list.
         private:
 
-            Node* root;
-            size_t size;
+            Node* root_; 
+            size_t size_;
 
             Node* newNode(const T& key)const{
                 try{
@@ -219,7 +218,7 @@ namespace Collections{
 
 template <typename T>
 void Collections::BST<T>::inorder_traversal()const{
-    inorder_traversal_own(this->root);
+    inorder_traversal_own(this->root_);
 }
 
 template <typename T>
@@ -234,7 +233,7 @@ void Collections::BST<T>::inorder_traversal(const Node* bst){
 
 template <typename T>
 void Collections::BST<T>::preorder_traversal()const{
-    preorder_traversal_own(this->root);
+    preorder_traversal_own(this->root_);
 }
 
 template <typename T>
@@ -249,7 +248,7 @@ void Collections::BST<T>::preorder_traversal(const Node* bst){
 
 template <typename T>
 void Collections::BST<T>::postorder_traversal()const{
-    postorder_traversal_own(this->root);
+    postorder_traversal_own(this->root_);
 }
 
 template <typename T>
@@ -264,7 +263,7 @@ void Collections::BST<T>::postorder_traversal(const Node* bst){
 
 template <typename T>
 void Collections::BST<T>::print_level(size_t level){
-    print_level_own(this->root, level);
+    print_level_own(this->root_, level);
 }
 
 template <typename T>
@@ -281,7 +280,7 @@ void Collections::BST<T>::print_level(const Node* bst, const size_t level){
 
 template <typename T>
 void Collections::BST<T>::print_leafs()const{
-    print_leafs_own(this->root);
+    print_leafs_own(this->root_);
 }
 
 template <typename T>
@@ -303,7 +302,7 @@ void Collections::BST<T>::print_leafs(const Node* bst){
 
 template <typename T>
 typename Collections::BST<T>::Node* Collections::BST<T>::get_smallest(){
-    return get_smallest_own(this->root);
+    return get_smallest_own(this->root_);
 }
 
 template <typename T>
@@ -319,7 +318,7 @@ typename Collections::BST<T>::Node* Collections::BST<T>::get_smallest(Node* bst)
 
 template <typename T>
 typename Collections::BST<T>::Node* Collections::BST<T>::get_largest(){
-    return get_largest_own(this->root);
+    return get_largest_own(this->root_);
 }
 
 template <typename T>
@@ -335,7 +334,7 @@ typename Collections::BST<T>::Node* Collections::BST<T>::get_largest(Node* bst){
 
 template <typename T>
 typename Collections::BST<T>::Node* Collections::BST<T>::search(const T& key){
-    return search_own(this->root, key);
+    return search_own(this->root_, key);
 }
 
 template <typename T>
@@ -351,17 +350,17 @@ typename Collections::BST<T>::Node* Collections::BST<T>::search(Node* bst, const
 
 template <typename T>
 size_t Collections::BST<T>::get_size(){
-    return this->size;
+    return this->size_;
 }
 
 template <typename T>
 bool Collections::BST<T>::empty()const{
-    return (this->size == 0);
+    return (this->size_ == 0);
 }
 
 template <typename T>
 size_t Collections::BST<T>::get_height(){
-    return get_height_own(this->root);
+    return get_height_own(this->root_);
 }
 
 template <typename T>
@@ -380,38 +379,38 @@ size_t Collections::BST<T>::get_height(Node* bst){
 
 template <typename T>
 void Collections::BST<T>::swap(Collections::BST<T>& bst){
-    Node* temp = this->root;
-    this->root = bst.root;
-    bst.root = temp;
-    size_t temp_size = this->size;
-    this->size = bst.size;
-    bst.size = temp_size;
+    Node* temp = this->root_;
+    this->root_ = bst.root_;
+    bst.root_ = temp;
+    size_t temp_size = this->size_;
+    this->size_ = bst.size_;
+    bst.size_ = temp_size;
 }
 
 template <typename T>
 void Collections::BST<T>::insert(const T& key){
-    Node* search_node = search(root, key);
+    Node* search_node = search(root_, key);
     if (search_node != nullptr){
         return;
     }
-    Node* new_root = insert(this->root, key);
-    this->root = new_root;
-    this->size++;
+    Node* new_root = insert(this->root_, key);
+    this->root_ = new_root;
+    this->size_++;
 }
 
 template <typename T>
 void Collections::BST<T>::delete_node(const T& key){
-    Node* search_node = search(this->root, key);
+    Node* search_node = search(this->root_, key);
     if (search_node == nullptr){
         return;
     }
-    Node* new_root = delete_node(this->root, key);
-    this->root = new_root;
-    this->size--;
+    Node* new_root = delete_node(this->root_, key);
+    this->root_ = new_root;
+    this->size_--;
 }
 
 template <typename T>
 typename Collections::BST<T>::Node* Collections::BST<T>::begin(){
-    return this->root;
+    return this->root_;
 }
 
