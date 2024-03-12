@@ -20,15 +20,14 @@ namespace Collections{
             };
         public:
             //Constructors and destructors:
-            List(): size(), head(nullptr) {} //default constructor
-            List(std::initializer_list<T> values): size(), head(nullptr){ //constructor with values: Collections::List<int> list = {1,2,3,4,5}
+            List(): size_(), head_(nullptr) {} //default constructor
+            List(std::initializer_list<T> values): size_(), head_(nullptr){ //constructor with values: Collections::List<int> list = {1,2,3,4,5}
                 for (const T& value : values){
                     push_back(value);
                 }
             }
-            ~List(){ //default destructor
-                clear();
-            }
+            ~List(){} //default destructor
+
             //Access to non-const list:
             Node* get_front(); //Returns the value of the first element in the list.
             Node* get_back(); //Returns the value of the last element in the list.
@@ -55,8 +54,8 @@ namespace Collections{
             Node* begin(); //begin() function returns an iterator pointing to the first element of the list.
             Node* end(); //end() function returns an iterator pointing to the theoretical last element which follows the last element.
         private:
-            Node* head;
-            size_t size;
+            Node* head_; 
+            size_t size_;
 
             Node* newNode(const T& value){
                 try{
@@ -116,15 +115,15 @@ namespace Collections{
 
 template <typename T>
 typename Collections::List<T>::Node* Collections::List<T>::get_front(){
-    return this->head;
+    return this->head_;
 }
 
 template <typename T>
 typename Collections::List<T>::Node* Collections::List<T>::get_back(){
-    if (this->head == nullptr){
-        return this->head;
+    if (this->head_ == nullptr){
+        return this->head_;
     }
-    Node* curr_node = this->head;
+    Node* curr_node = this->head_;
     while (curr_node->next != nullptr){
         curr_node = curr_node->next;
     }
@@ -133,10 +132,10 @@ typename Collections::List<T>::Node* Collections::List<T>::get_back(){
 
 template <typename T>
 void Collections::List<T>::display_list()const{
-    if (this->head == nullptr){
+    if (this->head_ == nullptr){
         return;
     }
-    Node* curr_node = this->head;
+    Node* curr_node = this->head_;
     while (curr_node->next != nullptr){
         std::cout<<curr_node->value<<" ";
         curr_node = curr_node->next;
@@ -146,12 +145,12 @@ void Collections::List<T>::display_list()const{
 
 template <typename T>
 size_t Collections::List<T>::get_size()const{
-    return this->size;
+    return this->size_;
 }
 
 template <typename T>
 bool Collections::List<T>::empty()const{
-    return this->size == 0;
+    return this->size_ == 0;
 }
 
 template <typename T>
@@ -160,7 +159,7 @@ void Collections::List<T>::operator=(Collections::List<T>& list_to_replace){
         return;
     }
     this->clear();
-    Node* curr_node = list_to_replace.head;
+    Node* curr_node = list_to_replace.head_;
     while (curr_node != nullptr){
         push_back(curr_node->value);
         curr_node = curr_node->next;
@@ -172,17 +171,17 @@ void Collections::List<T>::swap(Collections::List<T>& list_to_swap){
     if (this == &list_to_swap) {
         return;
     }
-    Node* temp_head = this->head;
-    this->head = list_to_swap.head;
-    list_to_swap.head = temp_head;
-    size_t temp_size = this->size;
-    this->size = list_to_swap.size;
-    list_to_swap.size = temp_size;
+    Node* temp_head = this->head_;
+    this->head_ = list_to_swap.head_;
+    list_to_swap.head_ = temp_head;
+    size_t temp_size = this->size_;
+    this->size_ = list_to_swap.size_;
+    list_to_swap.size_ = temp_size;
 }
 
 template <typename T>
 void Collections::List<T>::merge(Collections::List<T>& list_to_merge){
-    Node* curr_node = list_to_merge.head;
+    Node* curr_node = list_to_merge.head_;
     while (curr_node != nullptr){
         push_back(curr_node->value);
         curr_node = curr_node->next;
@@ -192,12 +191,12 @@ void Collections::List<T>::merge(Collections::List<T>& list_to_merge){
 template <typename T>
 Collections::List<T> Collections::List<T>::merge(Collections::List<T>& first_to_merge, Collections::List<T>& second_to_merge){
     Collections::List<int> new_list;
-    Node* curr_node = first_to_merge.head;
+    Node* curr_node = first_to_merge.head_;
     while (curr_node != nullptr){
         new_list.push_back(curr_node->value);
         curr_node = curr_node->next;
     }
-    curr_node = second_to_merge.head;
+    curr_node = second_to_merge.head_;
     while(curr_node != nullptr){
         new_list.push_back(curr_node->value);
         curr_node = curr_node->next;
@@ -208,68 +207,68 @@ Collections::List<T> Collections::List<T>::merge(Collections::List<T>& first_to_
 template <typename T>
 void Collections::List<T>::push_front(const T& value){
     Node* new_node = newNode(value);
-    if (this->head == nullptr){
-        this->head = new_node;
+    if (this->head_ == nullptr){
+        this->head_ = new_node;
     }else{
-        new_node->next = this->head;
-        this->head->prev = new_node;
-        this->head = new_node;
+        new_node->next = this->head_;
+        this->head_->prev = new_node;
+        this->head_ = new_node;
     }
-    this->size++;
+    this->size_++;
 }
 
 template <typename T>
 void Collections::List<T>::push_back(const T& new_elem){
     Node* new_node = newNode(new_elem);
-    if (this->head == nullptr){
-        this->head = new_node;
+    if (this->head_ == nullptr){
+        this->head_ = new_node;
     }else{
-        Node* curr = this->head;
+        Node* curr = this->head_;
         while (curr->next != nullptr){
             curr = curr->next;
         }
         curr->next = new_node;
         new_node->prev = curr;
     }
-    this->size++;
+    this->size_++;
 }
 
 template <typename T>
 void Collections::List<T>::pop_front(){
-    if (this->head == nullptr){
+    if (this->head_ == nullptr){
         throw std::runtime_error("Can not pop from empty list");
     }else{
-        this->head = this->head->next;
+        this->head_ = this->head_->next;
     }
-    this->size--;
+    this->size_--;
 }
 
 template <typename T>
 void Collections::List<T>::pop_back(){
-    if (this->head == nullptr){
+    if (this->head_ == nullptr){
         throw std::runtime_error("Can not pop from empty list");
-    }else if (this->head->next == nullptr){
-        this->head = nullptr;
+    }else if (this->head_->next == nullptr){
+        this->head_ = nullptr;
     }else{
-        Node* curr_node = this->head;
+        Node* curr_node = this->head_;
         while (curr_node->next != nullptr){
             curr_node = curr_node->next;
         }
         curr_node->prev->next = nullptr;
     }
-    this->size--;
+    this->size_--;
 }
 
 template <typename T>
 void Collections::List<T>::insert(const T& new_elem, size_t index){
-    if (index >= this->size){
+    if (index >= this->size_){
         throw std::out_of_range("Index out of range");
     }
     if (index == 0){
         this->push_front(new_elem);
     }else{
         Node* new_node = newNode(new_elem);
-        Node* curr_node = this->head;
+        Node* curr_node = this->head_;
         for (size_t i = 0; i < index - 1; i++){
             curr_node = curr_node->next;
         }
@@ -277,19 +276,19 @@ void Collections::List<T>::insert(const T& new_elem, size_t index){
         new_node->next = curr_node->next;
         new_node->prev = curr_node;
         curr_node->next = new_node;
-        this->size++;
+        this->size_++;
     }
 }
 
 template <typename T>
 void Collections::List<T>::erase(size_t index){
-    if (index >= this->size){
+    if (index >= this->size_){
         throw std::out_of_range("Index out of range");
     }
     if (index == 0){
-        this->head = this->head->next;
+        this->head_ = this->head_->next;
     }else{
-    Node* before_to_delete = this->head;
+    Node* before_to_delete = this->head_;
     for (size_t i = 0; i < index - 1; i++){
         before_to_delete = before_to_delete->next;
     }
@@ -297,17 +296,17 @@ void Collections::List<T>::erase(size_t index){
     before_to_delete->next = temp->next;
     delete temp;
     }
-    this->size--;
+    this->size_--;
 }
 
 template <typename T>
 void Collections::List<T>::reverse(){
-    if (this->size == 0 || this->size == 1){
+    if (this->size_ == 0 || this->size_ == 1){
         return;
     }
-    Node* prev_node = this->head;
-    Node* temp_node = this->head;
-    Node* curr_node = this->head->next;
+    Node* prev_node = this->head_;
+    Node* temp_node = this->head_;
+    Node* curr_node = this->head_->next;
     prev_node->next = nullptr;
 
     while (curr_node != nullptr){
@@ -317,25 +316,25 @@ void Collections::List<T>::reverse(){
         prev_node = curr_node;
         curr_node = temp_node;
     }
-    this->head = prev_node;
+    this->head_ = prev_node;
 }
 
 template <typename T>
 void Collections::List<T>::sort(){
-    if (this->size == 0 || this->size == 1){
+    if (this->size_ == 0 || this->size_ == 1){
         return;
     }
-    Node* new_head = mergeSort(this->head);
-    this->head = new_head;
+    Node* new_head = mergeSort(this->head_);
+    this->head_ = new_head;
 }
 
 template <typename T>
 void Collections::List<T>::unique(){
-    if (this->size == 0 || this->size == 1){
+    if (this->size_ == 0 || this->size_ == 1){
         return;
     }
     std::set<T> set;
-    Node* curr_node = this->head;
+    Node* curr_node = this->head_;
     while (curr_node != nullptr){
         if (set.count(curr_node->value) == 1){
             Node* temp = curr_node;
@@ -347,7 +346,7 @@ void Collections::List<T>::unique(){
                 temp->next->prev = temp->prev;
             }
             delete temp;
-            this->size--;
+            this->size_--;
         }else{
             set.insert(curr_node->value);
             curr_node = curr_node->next;
@@ -357,22 +356,22 @@ void Collections::List<T>::unique(){
 
 template <typename T>
 void Collections::List<T>::clear(){
-    while (this->head != nullptr){
-        Node* temp = this->head;
-        this->head = this->head->next;
+    while (this->head_ != nullptr){
+        Node* temp = this->head_;
+        this->head_ = this->head_->next;
         delete temp;
     }
-    this->size = 0;
+    this->size_ = 0;
 }
 
 template <typename T>
 typename Collections::List<T>::Node* Collections::List<T>::begin(){
-    return this->head;
+    return this->head_;
 }
 
 template <typename T>
 typename Collections::List<T>::Node* Collections::List<T>::end(){
-    Node* temp = this->head;
+    Node* temp = this->head_;
     while (temp->next != nullptr){
         temp = temp->next;
     }
