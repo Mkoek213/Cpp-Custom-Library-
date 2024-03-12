@@ -1,5 +1,4 @@
-#ifndef VECTOR_H
-#define VECTOR_H  
+#pragma once
 #include <cstddef> 
 #include <initializer_list>
 #include <stdio.h>
@@ -23,9 +22,8 @@ namespace Collections{
                     vec[i++] = value;
                 }
             }
-            ~Vector(){ //default destructor
-                free(vec);
-            }
+            ~Vector(){} //default destructor
+
             //Access to non-const vectors:
             T& operator[](size_t index); //access element using [index]
             T& at(size_t index); //access element by index
@@ -281,5 +279,3 @@ T* Collections::Vector<T>::end(){
     }
     return (T*)(vec + size);
 }
-
-#endif
