@@ -18,9 +18,8 @@ namespace Collections{
                     enqueue(value);
                 }
             }
-            ~Queue(){ //default destructor
-                clear();
-            }
+            ~Queue(){} //default destructor
+            
             //Access to non-const queue:
             T& get_front(); //get first element
             T& get_back(); //get last element
