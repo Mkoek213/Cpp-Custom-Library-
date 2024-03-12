@@ -1,6 +1,5 @@
 //RedBlackTree implementation so i can implement Map then
-#ifndef R_B_TREE_H
-#define R_B_TREE_H  
+#pragma once
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -472,4 +471,3 @@ class RedBlackTree{
                 }
             }
 };
-#endif
