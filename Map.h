@@ -1,7 +1,5 @@
 // Map.h
-#ifndef MAP_H
-#define MAP_H
-
+#pragma once
 #include "RedBlackTree.h"
 #include <cstddef> 
 #include <initializer_list>
@@ -13,21 +11,19 @@ namespace Collections{
 template <typename K, typename V>
 class Map {
 private:
-    RedBlackTree<K, V>* tree;
-    size_t size;
+    RedBlackTree<K, V>* tree_; 
+    size_t size_;
 public:
     // Constructors and destructors:
-    Map() : size(0), tree(new RedBlackTree<K, V>()) {} // Default constructor
-    Map(std::initializer_list<std::pair<K, V>> keyValuePairs) : size(0), tree(new RedBlackTree<K, V>()) {// Constructor with values: Collections::Map<int> Map = {{1, "One"}, {2, "Two"}, {3, "Three"}}
+    Map() : size_(0), tree_(new RedBlackTree<K, V>()) {} // Default constructor
+    Map(std::initializer_list<std::pair<K, V>> keyValuePairs) : size_(0), tree_(new RedBlackTree<K, V>()) {// Constructor with values: Collections::Map<int> Map = {{1, "One"}, {2, "Two"}, {3, "Three"}}
         for (const auto& pair : keyValuePairs) {
-            tree->insert(pair.first, pair.second);
-            size++;
+            tree_->insert(pair.first, pair.second);
+            size_++;
         }
     }
-    ~Map() { // Default destructor
-        tree->clear();
-        delete tree;
-    }
+    ~Map() {} // Default destructor
+
     //Access to non-const sets:
     NodePtr<K, V> operator[](const K& key); //This operator is used to reference the element present at the position given inside the operator
     NodePtr<K, V> find(const K& key); //returns the iterator to the element specified if found, else return nullptr
@@ -50,8 +46,8 @@ public:
 
 template <typename K, typename V>
 NodePtr<K, V> Collections::Map<K, V>::operator[](const K& key){
-    NodePtr<K, V> search_node = tree->searchTree(key);
-    if (search_node != tree->getTNULL()){
+    NodePtr<K, V> search_node = tree_->searchTree(key);
+    if (search_node != tree_->getTNULL()){
         return search_node;
     }else{
         return nullptr;
@@ -60,8 +56,8 @@ NodePtr<K, V> Collections::Map<K, V>::operator[](const K& key){
 
 template <typename K, typename V>
 NodePtr<K, V> Collections::Map<K, V>::find(const K& key){
-    NodePtr<K, V> search_node = tree->searchTree(key);
-    if (search_node != tree->getTNULL()){
+    NodePtr<K, V> search_node = tree_->searchTree(key);
+    if (search_node != tree_->getTNULL()){
         return search_node;
     }else{
         return nullptr;
@@ -70,65 +66,64 @@ NodePtr<K, V> Collections::Map<K, V>::find(const K& key){
 
 template <typename K, typename V>
 bool Collections::Map<K, V>::is_in(NodePtr<K, V> node)const{
-    return this->tree->isNodeInTree(node);
+    return this->tree_->isNodeInTree(node);
 }
 
 template <typename K, typename V>
 int Collections::Map<K, V>::count(const K& key){
-    return tree->countOccurence(key);
+    return tree_->countOccurence(key);
 }
 
 template <typename K, typename V>
 void Collections::Map<K, V>::operator=(const Collections::Map<K, V>& map_to_swap) {
-    if (map_to_swap.tree) {
-        delete this->tree;
-        this->tree = new RedBlackTree<K, V>(*map_to_swap.tree);
+    if (map_to_swap.tree_) {
+        delete this->tree_;
+        this->tree_ = new RedBlackTree<K, V>(*map_to_swap.tree_);
     } else {
-        this->tree = nullptr;  
+        this->tree_ = nullptr;  
     }
-    this->size = map_to_swap.size;
+    this->size_ = map_to_swap.size_;
 }
 
 template <typename K, typename V>
 void Collections::Map<K, V>::insert(const K& key, const V& value){
-    this->tree->insert(key, value);
-    this->size++;
+    this->tree_->insert(key, value);
+    this->size_++;
 }
 
 template <typename K, typename V>
 void Collections::Map<K, V>::erase(NodePtr<K, V> node_to_remove){
-    this->tree->deleteNodeByPointer(node_to_remove, this->size);
+    this->tree_->deleteNodeByPointer(node_to_remove, this->size_);
 }
 
 template <typename K, typename V>
 void Collections::Map<K, V>::erase(const K& key){
-    this->tree->deleteNodeByKey(key, this->size);
+    this->tree_->deleteNodeByKey(key, this->size_);
 }
 
 template <typename K, typename V>
 void Collections::Map<K, V>::clear(){
-    this->tree->clear();
-    this->size = 0;
+    this->tree_->clear();
+    this->size_ = 0;
 }
 
 template <typename K, typename V>
 size_t Collections::Map<K, V>::get_size()const{
-    return this->size;
+    return this->size_;
 }
 
 template <typename K, typename V>
 bool Collections::Map<K, V>::empty()const{
-    return (this->size == 0);
+    return (this->size_ == 0);
 }
 
 template <typename K, typename V>
 NodePtr<K, V> Collections::Map<K, V>::begin(){
-    return tree->minimum(tree->getRoot());
+    return tree_->minimum(tree_->getRoot());
 }
 
 template <typename K, typename V>
 NodePtr<K, V> Collections::Map<K, V>::end(){
-    return tree->maximum(tree->getRoot());
+    return tree_->maximum(tree_->getRoot());
 }
 
-#endif
