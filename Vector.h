@@ -12,14 +12,14 @@ namespace Collections{
     class Vector{
         public:
             //Constructors and destructors:
-            Vector(): size(), capacity(), vec(nullptr) {} //default constructor
+            Vector(): size_(), capacity_(), vec_(nullptr) {} //default constructor
             Vector(std::initializer_list<T> values): //constructor with values: Collections::vector<int> vec = {1,2,3,4,5}
-            size(values.size()), 
-            capacity(values.size() * 2), 
-            vec((T*)malloc(capacity * sizeof(T))){
+            size_(values.size()), 
+            capacity_(values.size() * 2), 
+            vec_((T*)malloc(capacity_ * sizeof(T))){ 
                 size_t i = 0;
                 for (const T& value : values){
-                    vec[i++] = value;
+                    vec_[i++] = value;
                 }
             }
             ~Vector(){} //default destructor
@@ -48,22 +48,22 @@ namespace Collections{
             T* end(); //returns pointer to the last element
         private:
             void init_vector();
-            size_t capacity;
-            size_t size;
-            T* vec;
+            size_t capacity_;
+            size_t size_;
+            T* vec_;
     };
 }
 
 template <typename T>
 void Collections::Vector<T>::init_vector(){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         T* new_vec = (T*)malloc(5 * sizeof(T));
         if (new_vec == nullptr){
             throw std::bad_alloc();
         }else{
-            vec = new_vec;
-            capacity = 5;
-            size = 0;
+            vec_ = new_vec;
+            capacity_ = 5;
+            size_ = 0;
         }
     }else{
         throw std::runtime_error("Can not initialize new vector");
@@ -72,210 +72,210 @@ void Collections::Vector<T>::init_vector(){
 
 template <typename T>
 T& Collections::Vector<T>::operator[](size_t index){
-    if (index >= size){
+    if (index >= size_){
         throw std::out_of_range("Index out of range");
     }
-    return *(vec + index);
+    return *(vec_ + index);
 }
 
 template <typename T>
 T& Collections::Vector<T>::at(size_t index){
-    if (index >= size){
+    if (index >= size_){
         throw std::out_of_range("Index out of range");
     }
-    return vec[index];
+    return vec_[index];
 }
 
 template <typename T>
 T& Collections::Vector<T>::get_front(){
-    if (size == 0){
+    if (size_ == 0){
         throw std::out_of_range("Vector is empty");
     }
-    return vec[0];
+    return vec_[0];
 }
 
 template <typename T>
 T& Collections::Vector<T>::get_back(){
-    if (size == 0){
+    if (size_ == 0){
         throw std::out_of_range("Vector is empty");
     }
-    return vec[size - 1];
+    return vec_[size_ - 1];
 }
 
 template <typename T>
 size_t Collections::Vector<T>::get_size()const{
-    return size;
+    return size_;
 }
 
 template <typename T>
 size_t Collections::Vector<T>::get_capacity()const{
-    return capacity;
+    return capacity_;
 }
 
 template <typename T>
 bool Collections::Vector<T>::empty()const{
-    return size == 0;
+    return size_ == 0;
 }
 
 template <typename T>
 void Collections::Vector<T>::shrink_to_fit(){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::bad_alloc();
     }
-    T* new_vec = (T*)realloc(vec, size * sizeof(T));
+    T* new_vec = (T*)realloc(vec_, size_ * sizeof(T));
     if (new_vec == nullptr){
         throw std::bad_alloc();
     }
-    vec = new_vec;
-    capacity = size;
+    vec_ = new_vec;
+    capacity_ = size_;
 }
 
 template <typename T>
 void Collections::Vector<T>::reserve_space(size_t extra_capacity){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::bad_alloc();
     }
-    T* new_vec = (T*)realloc(vec, (capacity + extra_capacity) * sizeof(T));
+    T* new_vec = (T*)realloc(vec_, (capacity_ + extra_capacity) * sizeof(T));
     if (new_vec == nullptr){
         throw std::bad_alloc();
     }
-    vec = new_vec;
-    capacity += extra_capacity;
+    vec_ = new_vec;
+    capacity_ += extra_capacity;
 }
 
 template <typename T>
 void Collections::Vector<T>::push_back(const T& value){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         init_vector();
     }
-    if (size >= capacity){
-        reserve_space(capacity);
-        capacity *= 2;
+    if (size_ >= capacity_){
+        reserve_space(capacity_);
+        capacity_ *= 2;
     }
-    vec[size] = value;
-    size++;
+    vec_[size_] = value;
+    size_++;
 }
 
 template <typename T>
 void Collections::Vector<T>::push_front(const T& value){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         init_vector();
     }
-    if (size >= capacity){
-        reserve_space(capacity);
-        capacity *= 2;
+    if (size_ >= capacity_){
+        reserve_space(capacity_);
+        capacity_ *= 2;
     }
-    T* destination = (T*)((char*)vec);
-    T* source = (T*)vec;
-    for (size_t i = size; i > 0; i--){
+    T* destination = (T*)((char*)vec_);
+    T* source = (T*)vec_;
+    for (size_t i = size_; i > 0; i--){
         destination[i] = source[i-1];
     }
     destination[0] = value;
-    size++;
+    size_++;
 }
 
 template <typename T>
 void Collections::Vector<T>::pop_back(){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::runtime_error("Vector points to NULL");
     }
-    if (size == 0){
+    if (size_ == 0){
         throw std::runtime_error("Can not pop from empty vector");
     }
     if constexpr (!std::is_trivially_destructible_v<T>) {
         // Non-trivial type, call the destructor for the last element
-        vec[size - 1].~T();
+        vec_[size_ - 1].~T();
     }
-    size--;
+    size_--;
 }
 
 template <typename T>
 void Collections::Vector<T>::pop_front(){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::runtime_error("Vector points to NULL");
     }
-    if (size == 0){
+    if (size_ == 0){
         throw std::runtime_error("Can not pop from empty vector");
     }
     if constexpr (!std::is_trivially_destructible_v<T>) {
         // Non-trivial type, call the destructor for the last element
-        vec[0].~T();
+        vec_[0].~T();
     }
-    for (size_t i = 1; i < size; i++){
-        vec[i - 1] = std::move(vec[i]);
+    for (size_t i = 1; i < size_; i++){
+        vec_[i - 1] = std::move(vec_[i]);
     }
-    size--;
+    size_--;
 }
 
 template <typename T>
 void Collections::Vector<T>::push_at_index(const T& value, size_t index){
-    if (index > size){
+    if (index > size_){
         throw std::out_of_range("Index out of range");
     }
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         init_vector();
     }
-    if (size >= capacity){
-        reserve_space(capacity);
-        capacity *= 2;
+    if (size_ >= capacity_){
+        reserve_space(capacity_);
+        capacity_ *= 2;
     }
-    for (size_t i = size; i > index; i--){
-        vec[i] = std::move(vec[i - 1]);
+    for (size_t i = size_; i > index; i--){
+        vec_[i] = std::move(vec_[i - 1]);
     }
-    vec[index] = value;
-    size++;
+    vec_[index] = value;
+    size_++;
 }
 
 template <typename T>
 void Collections::Vector<T>::pop_at_index(size_t index){
-    if (index >= size){
+    if (index >= size_){
         throw std::out_of_range("Index out of range");
     }
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::runtime_error("Vector points to NULL");
     }
-    if (size == 0){
+    if (size_ == 0){
         throw std::runtime_error("Can not pop from empty vector");
     }
     if constexpr (!std::is_trivially_destructible_v<T>) {
         // Non-trivial type, call the destructor for element at index
-        vec[index].~T();
+        vec_[index].~T();
     }
-    for (size_t i = index + 1; i < size; i++){
-        vec[i - 1] = std::move(vec[i]);
+    for (size_t i = index + 1; i < size_; i++){
+        vec_[i - 1] = std::move(vec_[i]);
     }
-    size --;
+    size_--;
 }
 
 template <typename T>
 void Collections::Vector<T>::clear(){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::runtime_error("Vector points to NULL");
     }
-    if (size == 0){
+    if (size_ == 0){
         throw std::runtime_error("Can not pop from empty vector");
     }
-    size = 0;
+    size_ = 0;
 }
 
 template <typename T>
 T* Collections::Vector<T>::begin(){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::runtime_error("Vector points to NULL");
     }
-    if (size == 0){
+    if (size_ == 0){
         throw std::runtime_error("Vector is empty");
     }
-    return vec;
+    return vec_;
 }
 
 template <typename T>
 T* Collections::Vector<T>::end(){
-    if (vec == nullptr){
+    if (vec_ == nullptr){
         throw std::runtime_error("Vector points to NULL");
     }
-    if (size == 0){
+    if (size_ == 0){
         throw std::runtime_error("Vector is empty");
     }
-    return (T*)(vec + size);
+    return (T*)(vec_ + size_);
 }
